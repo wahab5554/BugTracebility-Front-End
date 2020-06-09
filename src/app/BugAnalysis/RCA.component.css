@@ -1,0 +1,13 @@
+ 
+  .ui-datatable {
+      margin-bottom:20px;
+  }
+ 
+  .ui-datatable-frozenlayout-left {
+      width:20%;
+  }
+ 
+  .ui-datatable-frozenlayout-right {
+      width:80%;
+  }
+  

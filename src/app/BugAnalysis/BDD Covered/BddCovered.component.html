@@ -1,0 +1,47 @@
+<div class="p-grid" style="display: block;  padding: 5px">
+    <p-toolbar>
+        <div class="p-col-4 ui-toolbar-group-left">
+            <div class="ui-inputgroup">
+                 
+                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Report: </label>
+                <p-dropdown [options]="BddReports" [(ngModel)]="selectedreport" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="p-col-8 ui-toolbar-group-right">
+            <button pButton type="button"  icon="pi pi-search" (click)="populate_bdd_data()"
+            
+            ></button> &nbsp;&nbsp;
+            
+            <button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button>
+        </div>
+    </p-toolbar>
+   
+
+    <p-table [value]="bdd_data">
+         
+        <ng-template pTemplate="header">
+            <tr> 
+                <th>Scrum Team</th>
+                <th>Total Fixed Bugs</th>
+                <th>Covered in BDD</th>
+                <th>Not Covered in BDD</th>
+                <th>General Regression</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-bdd_data>
+            
+            <tr>
+                <td>{{bdd_data.Team}}</td>
+                <td>{{bdd_data.Total_fixed_bugs}}</td>
+                <td>{{bdd_data.total_bdd_covered}}</td>
+                <td>{{bdd_data.total_bdd_not_covered}}</td>
+                <td>{{bdd_data.total_general_regression}}</td>
+              
+            </tr>
+        </ng-template>
+    </p-table>
+    
+   
+</div>

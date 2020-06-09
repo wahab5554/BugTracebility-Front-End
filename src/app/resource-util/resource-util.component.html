@@ -1,0 +1,26 @@
+<div class="p-grid" style="display: block;  padding: 5px">
+    <p-toolbar>
+        <div class="p-col-3 ui-toolbar-group-left">
+            <div class="ui-inputgroup">
+                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Resource: </label>
+
+                <p-multiSelect [options]="allResources" [(ngModel)]="selectResources" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}">
+                </p-multiSelect>&nbsp;&nbsp;
+            </div>
+        </div>
+        <div class="p-col-9 ui-toolbar-group-right">
+            <button pButton type="button" icon="pi pi-search"></button>
+            &nbsp;&nbsp;
+            <button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button>
+        </div>
+    </p-toolbar>
+
+
+    <h3 class="p-col-12"> Resource Utilization Graph </h3>
+    <p-chart class="p-col-12" type="bar" [data]="resourceGraphData" [options]="resGraphOptions" width="1100px"
+        height="500px">
+    </p-chart>
+
+
+</div>

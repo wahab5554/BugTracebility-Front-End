@@ -1,0 +1,176 @@
+<div class="p-grid" style="display: block;  padding: 5px">
+    <p-toolbar>
+        <div class="p-col-4 ui-toolbar-group-left">
+            <div class="ui-inputgroup">
+                <label style="margin-top: 5px;margin-right: 5px;">Release Cycle:20.4.3 </label>
+                
+            </div>
+        </div>
+       
+        
+    </p-toolbar>
+    <div class="container">
+        <table class="table" #table>
+        
+      
+  
+
+            <tr>
+               
+                <td><p-chart type="pie" [data]="data"></p-chart></td>
+                <td><p-chart type="pie" [data]="data2"></p-chart></td>
+                
+              
+               
+            </tr>
+            <tr>
+                <td>
+                    <p-table [value]="AllData">
+         
+                        <ng-template pTemplate="header">
+                            <tr> 
+                                <th>BDD Covered</th>
+                                <th>BDD Not Covered</th>
+                                <th>General Regression</th>
+                                <th>Total QA Fixed Bugs</th>
+                                
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-AllData>
+                            
+                            <tr>
+                                <td>{{AllData.bdd_covered_perc}}</td>
+                                <td>{{AllData.not_covered_bdd_perc}}</td>
+                                <td>{{AllData.general_reg_perc}}</td>
+                                <td>{{AllData.total_qa_fixed_bugs}}</td>
+                                
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    
+
+
+
+
+                </td>
+                <td>
+                    <p-table [value]="AllData2">
+         
+                        <ng-template pTemplate="header">
+                            <tr> 
+                                <th>BDD Covered</th>
+                                <th>BDD Not Covered</th>
+                                <th>General Regression</th>
+                                <th>Total QA Fixed Bugs</th>
+                                
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-AllData2>
+                            
+                            <tr>
+                                <td>{{AllData2.bdd_covered_perc}}</td>
+                                <td>{{AllData2.not_covered_bdd_perc}}</td>
+                                <td>{{AllData2.general_reg_perc}}</td>
+                                <td>{{AllData2.total_qa_fixed_bugs}}</td>
+                                
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+
+
+
+
+                </td>
+                
+                
+            </tr>
+            <td>
+
+            </td>
+           
+        
+            <tr>
+                
+                <td><p-chart type="pie" [data]="data3"></p-chart></td>
+                <td><p-chart type="pie" [data]="data4"></p-chart></td>
+                
+             
+               
+            
+               
+            </tr>
+            <tr>
+                
+               <Td>
+                <p-table [value]="data4">
+         
+                    <ng-template pTemplate="header">
+                        <tr> 
+                            <th>QA</th>
+                            <th>Other than QA</th>
+                            
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-AllData3>
+                        
+                        <tr>
+                            <td>{{AllData3.total_qa}}</td>
+                            <td>{{AllData3.total_other}}</td>
+                            
+                            
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+            </Td>
+            <Td>
+                <p-table [value]="AllData4">
+         
+                    <ng-template pTemplate="header">
+                        <tr> 
+                            <th>QA</th>
+                            <th>Non-QA</th>
+
+                            
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-AllData3>
+                        
+                        <tr>
+                           
+                            
+                            
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+            </Td>
+            
+               
+            </tr>
+            <tr>
+                <td  colspan="3">
+                    <p-chart type="pie" [data]="data6"></p-chart>
+    
+    
+                </td>
+    
+    
+                </tr>
+            <tr>
+               
+                <Td colspan="3">
+                <p-chart type="bar" [data]="data5"></p-chart>
+            </Td>
+            </tr>
+
+            
+        </table>
+
+    </div>
+  
+
+</div>
