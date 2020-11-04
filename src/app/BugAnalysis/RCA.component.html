@@ -3,65 +3,109 @@
 <div class="p-grid" style="display: block;  padding: 5px">
     <p-toolbar>
         <div class="p-col-4 ui-toolbar-group-left">
+            <table>
+
+          <tr>
+
+        
+          <td>
             <div class="ui-inputgroup">
                 
                 <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Team: </label>
                 <p-dropdown [options]="teamname" [(ngModel)]="selectedteams" [virtualScroll]="true"
                     [panelStyle]="{minWidth:'30em'}">
                 </p-dropdown>
+
+                
             </div>
-        </div>
+          </td>
+            <td>
+
+          
+            <div class="ui-inputgroup">
+                
+                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Sprint: </label>
+                <p-dropdown [options]="sprints" [(ngModel)]="selectedsprint" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}">
+                </p-dropdown>
+
+                
+            </div>
+        </td>
+        <td>
+            <div class="p-col-8 ui-toolbar-group-right">
+            
+                <button pButton type="button"  icon="pi pi-search" (click)="populate_bug_data_db()"
+                
+                ></button>  
+                
+               
+            </div>
+            
+
+        </td>
         <div class="p-col-8 ui-toolbar-group-right">
-            <button pButton type="button"  icon="pi pi-search" (click)="populate_bug_data()"
-            
-            ></button> &nbsp;&nbsp;
-            
-            <button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button>
+            <button pButton type="button" icon="pi pi-times" class="ui-button-danger" (click)="clear_data()"></button>
         </div>
-        
+    </tr>
+        </table>
+        </div>
+       
     </p-toolbar>
     
     <div class="container">
      
       
             
-    <p-table [value]="testdata" *ngIf="is_visible"  [scrollable]="true"   >
+    <p-table [value]="testdata" *ngIf="is_visible" >
         <ng-template pTemplate="caption">
           
         </ng-template>
         
         <ng-template pTemplate="header" >
             <tr> 
-                <th [style]="{width:'auto'}">ID</th>
-                <th [style]="{width:'auto'}">Title</th>
-              
-                <th [style]="{width:'auto'}">role</th>
-                <th [style]="{width:'auto'}">RCA_Category</th>
-                <th [style]="{width:'auto'}">How_Bug_was_Found?</th>
-                <th [style]="{width:'auto'}">RCA_Comments <button id="disabled-btn"   pButton icon="pi pi-pencil" type="button" (click)="toggleDisabled()"></button></th>
-                <th>Click on Save Button After Changes</th>
+                <th [style]="{width:'70px'}">ID</th>
+                <th [style]="{width:'300px'}">Title</th>
+                <th [style]="{width:'80px'}">State</th>
+                <th [style]="{width:'230px'}">RCA_Category</th>
+                <th [style]="{width:'230px'}">How_Bug_was_Found?</th>
+                <th [style]="{width:'200px'}">Bug Identification Phase</th>
+                <th [style]="{width:'180px'}">RCA_Comments <button id="disabled-btn"   pButton icon="pi pi-pencil" type="button" (click)="toggleDisabled()"></button></th>
+
+                <th> <button id="disabled-btn" type="button" (click)="save_all_RCA()" pButton label="Save All"></button></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-testdata>
+        <ng-template pTemplate="body" let-testdata> 
             
             <tr>
-                <td [style]="{width:'auto'}">{{testdata.Bug_ID}}</td>
-                <td [style]="{width:'auto'}">{{testdata.Title}}</td>
-              
-              
-                <td [style]="{width:'auto'}">{{testdata.role}}</td>
+                <td [style]="{width:'100px'}">{{testdata.Bug_ID}}</td>
+                <td [style]="{width:'300px'}">{{testdata.Title}}</td>
+                <td [style]="{width:'70px'}">{{testdata.State}}</td>
                 
-                <td  [style]="{width:'auto'}"><p-dropdown [options]="rca_category" [(ngModel)]="testdata.Bug_RCA_Categeory" placeholder="Select" optionLabel="value" [showClear]="true"
+                <td  [style]="{width:'auto'}"><p-dropdown [options]="rca_category"  [(ngModel)]="testdata.bug_rca_categeory" placeholder="{{testdata.bug_rca_categeory}}" optionLabel="value" [showClear]="true"
                     [style]="{'width': 'auto'}"></p-dropdown></td>
-                <td  [style]="{width:'auto'}"><p-dropdown [options]="rca_category" class="ui-resizable-column" [(ngModel)]="testdata.How_bug_was_found" placeholder="Select" optionLabel="value" [showClear]="true"
+                <td  [style]="{width:'auto'}"><p-dropdown [options]="bug_found" class="ui-resizable-column" [(ngModel)]="testdata.how_bug_was_found" placeholder="{{testdata.how_bug_was_found}}" optionLabel="value" [showClear]="true"
                         [style]="{'width': 'auto'}"></p-dropdown></td>
+                        <td  [style]="{width:'auto'}"><p-dropdown [options]="identification_phase" class="ui-resizable-column" [(ngModel)]="testdata.bug_identification_phase" placeholder="{{testdata.bug_identification_phase}}" optionLabel="value" [showClear]="true"
+                            [style]="{'width': 'auto'}"></p-dropdown></td>
                
                  <td [style]="{width:'auto'}">  
 
-                 <textarea pInputTextarea  id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='testdata.kosher_scenario'></textarea></td> 
-                 <td><button id="disabled-btn" type="button" (click)="save_Comments_rca(testdata.Bug_ID,testdata.Bug_RCA_Categeory.label,testdata.How_bug_was_found,testdata.kosher_scenario)" pButton label="Save"></button></td>
+                 <textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Add Comment" [(ngModel)]='testdata.rca_comments'></textarea></td> 
+                 <td><button id="disabled-btn" type="button"  (click)="save_Comments_rca(testdata.Bug_ID,testdata.bug_rca_categeory,testdata.how_bug_was_found,testdata.bug_identification_phase,testdata.rca_comments)" pButton label="Save"></button></td>
             </tr>
         </ng-template>
+    </p-table>
+    <p-table [value]="testdata" [resizableColumns]="true" *ngIf="testdata.length==0 && is_visible">
+        
+        <ng-template pTemplate="header">
+            <tr>
+                <th>No Data To Display</th>
+            
+            </tr>
+        </ng-template>
+        
+       
     </p-table>
    
   
@@ -70,4 +114,5 @@
  
 
 </div>
+
 </div>

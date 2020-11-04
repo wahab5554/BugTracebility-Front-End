@@ -4,7 +4,10 @@ import { IfStmt } from '@angular/compiler';
 import {MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 import { Data } from '@angular/router';
+import { AppComponent } from '../app.component';
+
 @Component({
   selector: 'app-bug',
   templateUrl: './bug.component.html',
@@ -20,21 +23,16 @@ export class BugComponent implements OnInit {
   displayDialog: boolean;
 
     
-
-    selectedCar: any;
-
-    newCar: boolean;
-
   
-    cols: any[];
+  cols: any[];
    text: string;
 
    bugid: string;
+   sprint:string;
    buttn_text: string;
    comments: string;
   is_visible: boolean= false;
   testdata: any[] = [];
-  fixedreasons =[{a:'Fixed',b:'Fixed and verified'}];
   pm_bugs_kosher : any[] = [];
   qa_bugs_kosher : any[] = [];
   qa_non_fixed : any[] = [];
@@ -42,86 +40,194 @@ export class BugComponent implements OnInit {
   AllData: any[] = [];
   AllData_Bugs: any[] = [];
   AllData_Kosher: any[] = [];
-  title = 'AngularDashboard';
+  title = 'Bug Tracebility Matrix';
   data: any;
-  siteComparisionsData: any;
-  shiftLeftData: any;
-  shiftLeftOptions: any;
-  options2: any;
-  options: any;
   sideBarVisibility: boolean;
-  teamname: any[] = [];
+  teamname: any[] = [{label:'Select',value:'Select'}];
   selectedteams:any[]
   releaseCycles:any[] = []
   selectedReleaseCycle:any[] = []
+  sprints: any[] = [{label:'Select',value:'Select'}];
+  selectedsprint:any[]
+  Bugs_data: any[] = [];
   
-  
-
-
-  constructor(private service: CollectDataService,private messageService: MessageService) {
+  selectedValues:any;
+  constructor(private service: CollectDataService,private messageService: MessageService,private AppComponent:AppComponent) {
     this.buttn_text="edit"
-    this.releaseCycles = [
-     
-      {
-        label: 'Release 20.04', value: 'Release 20.04',
-      }
-    ];
-
-  
-    this.teamname = [
-      {label:'Select', value:'Select Team'},
-     {label: 'Content Platforms A' , value:'Content Platforms A'},
-      {label: 'Content Platforms C' , value:'Content Platforms C'},
-      {label: 'CRE' , value:'CRE'},
-     {label: 'DMS API Metadata' , value:'DMS API Metadata'},
-     {label: 'DMS API Metadata' , value:'DMS API Metadata'},
-     {label: 'DTI Core Services A' , value:'DTI Core Services A'},
-     {label: 'DTI Core Services A' , value:'DTI Core Services A'},
-     {label: 'DTI Data Ingestion C' , value:'DTI Data Ingestion C'},
-     {label: 'DTI Financials Mapping and Middle Tier' , value:'DTI Financials Mapping and Middle Tier'},
-     {label: 'DTI Financials Segments' , value:'DTI Financials Segments'},
-     {label: 'DTI Marketplace Data Ingestion A' , value:'DTI Marketplace Data Ingestion A'},
-     {label: 'DTI Marketplace Data Ingestion B' , value:'DTI Marketplace Data Ingestion B'},
-     {label: 'ESG A' , value:'ESG A'},
-     {label: 'Energy B' , value:'Energy B'}
-     
-    ]
+    
+    AppComponent.heading_text='Bug Analysis Data'
+    this.teamname = []
       
     };
+  clear_data()
+  {
+    this.Bugs_data= [];
+    this.BUGS_Total= [];
+    this.pm_bugs_kosher= [];
+    this.qa_bugs_kosher= [];
+    this.qa_non_fixed= [];
+    this.is_visible= false;
+    this.selectedteams=[];
+    this.selectedsprint=[];
+  }
+  populate_bug_data_db()
+  {
+    console.log(typeof this.selectedsprint)
+    console.log(typeof this.selectedteams)
 
-  
-  populate_bug_data() {
+  if(typeof this.selectedsprint=="object")
+  {
+    this.is_visible=false
+    this.messageService.add({severity:'error', summary:'Please Select Sprint!', detail:'Via BugAnalysis Team'});
+  }
+
+  if(typeof this.selectedsprint=="object")
+  {
+    this.is_visible=false
+    this.messageService.add({severity:'error', summary:'Please Select Team!', detail:'Via BugAnalysis Team'});
+  }
+  else
+   {
+
     this.is_visible=true
-    this.service.collct_data_from_service_bug().subscribe(data=> {
+    
+    this.service.search_bugs_summary(this.selectedsprint,this.selectedteams.toString()).subscribe(data=> {
+      this.Bugs_data= [];
       
-     this.testdata = this.AllData.filter(
-        book => book.str_team === this.selectedteams)
 
-        this.BUGS_Total = this.AllData_Bugs.filter(
-          bugs => bugs.team === this.selectedteams)
-
-
-        this.pm_bugs_kosher = this.AllData_Kosher.filter(
-        pm => pm.team === this.selectedteams && pm.role!="QA"  && pm.resolvedreason==="Fixed"
-      )
-          
-        this.qa_bugs_kosher = this.AllData_Kosher.filter(
-        qa => qa.team === this.selectedteams && qa.role==="QA" && qa.resolvedreason==="Fixed")
-           
-        this.qa_non_fixed = this.AllData_Kosher.filter(
-          qa => qa.team === this.selectedteams && qa.role==="QA" && qa.resolvedreason!="Fixed"  ) 
+    
+       
+          for (let item of data[0])
+          {
+          this.Bugs_data.push(JSON.parse(item))
+            
+          }
+        
+   
+            
+        
+             
+  
+    this.messageService.add({severity:'success', summary:'Data Fetched From Database', detail:'Via BugAnalysis Team'});
             
     })
 
-  }  
+    this.service.get_bugs_percentage(this.selectedsprint,this.selectedteams.toString().replace('\\','-')).subscribe(data=> {
+      this.BUGS_Total= [];
+
+    
+       
+          for (let item of data[0])
+          {
+          this.BUGS_Total.push(JSON.parse(item))
+            
+          }
+       
+            
+    })
+
+
+
+    this.service.get_pm_other_bugs_data(this.selectedsprint,this.selectedteams.toString().replace('\\','-')).subscribe(data=> {
+      this.pm_bugs_kosher= [];
+
+    
+       
+          for (let item of data[0])
+          {
+            this.pm_bugs_kosher.push(JSON.parse(item))
+            
+          }
+           
+            
+    })
+
+    this.service.get_qa_fixed_bugs_data(this.selectedsprint,this.selectedteams.toString().replace('\\','-')).subscribe(data=> {
+      this.qa_bugs_kosher= [];
+
+    
+       
+          for (let item of data[0])
+          {
+            this.qa_bugs_kosher.push(JSON.parse(item))
+            
+          }
+          
+            
+    })
+
+    this.service.get_qa_non_fixed_bugs_data(this.selectedsprint,this.selectedteams.toString().replace('\\','-')).subscribe(data=> {
+      this.qa_non_fixed= [];
+
+    
+       
+          for (let item of data[0])
+          {
+            this.qa_non_fixed.push(JSON.parse(item))
+            
+          }
+       
+            
+    })
+  }
+  }
   
  
-  
-  Save_Comments(bugid,comments) {
+  selectRow(event){
+    console.log("selected row!");
+  }
+
+  unselectRow(event){
+    console.log("unselected a row!")
+  }
+
+  save_all_qa_non_fixed_bugs_comments(){
    
+
+
+    
+    for (var i = 0; i < this.qa_non_fixed.length; i++){
+     
+      
+
+     
+      this.Save_Comments(this.qa_non_fixed[i].bug_id,this.qa_non_fixed[i].comments)
+    }
+  }
+
+  save_all_pm_bugs_comments(){
+    
+
+
+    
+    for (var i = 0; i < this.pm_bugs_kosher.length; i++){
+     
+      
+
+     
+      this.Save_Comments(this.pm_bugs_kosher[i].bug_id,this.pm_bugs_kosher[i].comments)
+    }
+  }
+  save_all_qa_bugs_comments(){
+    
+
+
+    
+    for (var i = 0; i < this.qa_bugs_kosher.length; i++){
+     
+      
+
+     
+      this.Save_Comments(this.qa_bugs_kosher[i].bug_id,this.qa_bugs_kosher[i].comments)
+    }
+   
+  }
+
+  Save_Comments(bugid,comments) {
+    
     this.service.post_comments_service(bugid,comments).subscribe(data=> {
       
-      this.messageService.add({severity:'success', summary:'Saved Successfully', detail:'Via BugAnalysis Team'});
+      this.messageService.add({severity:'success', summary:'Saved Successfully For BugID='+bugid, detail:'Via BugAnalysis Team'});
             
     })
 
@@ -130,37 +236,61 @@ export class BugComponent implements OnInit {
      
     this.sideBarVisibility = true
 
-     this.service.collct_data_from_service_bug().subscribe(data=> {
+   
+    
 
-       for (let item of data[0])
-       {
-       this.AllData.push(JSON.parse(item))
-         
-       }
-      }) 
-
-      this.service.collct_bugs_total_data_from_service_teams().subscribe(data=> {
-
-        for (let item of data[0])
-        {
-        this.AllData_Bugs.push(JSON.parse(item))
+    
+     
+    this.service.collect_teams().subscribe(data=> {
+    
+      let temp_item={label:"Select",value:"Select"}
         
+      this.teamname.push(temp_item)
          
-        }
-       }) 
-
-       this.service.collect_kosher_data().subscribe(data=> {
-
-        for (let item of data[0])
-        {
-        this.AllData_Kosher.push(JSON.parse(item))
+      this.selectedteams=this.teamname[0]      
+        
+          for (let item of data[0])
+          {
+            let temp_item={label:"",value:""}
+            temp_item.label=JSON.parse(item).team
+            temp_item.value=JSON.parse(item).team
+            this.teamname.push(temp_item)
          
-        }
+            
+          }
+        
+   
+            
+    
+            
+    })
 
-       }) 
 
-      
-  }
+    this.service.collect_iterations().subscribe(data=> {
+    
+     
+         
+      this.selectedsprint=this.sprints[0]      
+        
+          for (let item of data[0])
+          {
+            let temp_item={label:"",value:""}
+            temp_item.label=JSON.parse(item).team
+            temp_item.value=JSON.parse(item).team
+            this.sprints.push(temp_item)
+         
+            
+          }
+        
+   
+            
+    
+            
+    })
+    
+    }
+     
+   
 
   toggleDisabled() {
     this.disabled = !this.disabled;
@@ -170,21 +300,12 @@ export class BugComponent implements OnInit {
   exportExcel() {
     const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(this.table.nativeElement);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws,this.selectedteams.toString());
+    XLSX.utils.book_append_sheet(wb, ws,this.selectedteams.toString().replace('\\','-'));
     
-    /* save to file */
+    
     XLSX.writeFile(wb, 'BugTracebilityReport.xlsx');
 }
 
-saveAsExcelFile(buffer: any, fileName: string): void {
-    import("file-saver").then(FileSaver => {
-        let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-        let EXCEL_EXTENSION = '.xlsx';
-        const data: Blob = new Blob([buffer], {
-            type: EXCEL_TYPE
-        });
-        FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-    });
-}
+
 
 }

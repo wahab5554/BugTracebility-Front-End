@@ -1,30 +1,106 @@
+<p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
 <div class="p-grid" style="display: block;  padding: 5px">
+    
+    
+ 
     <p-toolbar>
         <div class="p-col-4 ui-toolbar-group-left">
+            <table>
+
+          <tr>
+
+        
+          <td>
             <div class="ui-inputgroup">
-                 
+                
                 <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Report: </label>
                 <p-dropdown [options]="BddReports" [(ngModel)]="selectedreport" [virtualScroll]="true"
                     [panelStyle]="{minWidth:'30em'}">
                 </p-dropdown>
-            </div>
-        </div>
-        <div class="p-col-8 ui-toolbar-group-right">
-            <button pButton type="button"  icon="pi pi-search" (click)="populate_bdd_data()"
-            
-            ></button> &nbsp;&nbsp;
-            
-            <button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button>
-        </div>
-    </p-toolbar>
-   
 
-    <p-table [value]="bdd_data">
-         
+                
+            </div>
+          </td>
+            <td>
+
+          
+            <div class="ui-inputgroup">
+                
+                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Sprint: </label>
+                <p-dropdown [options]="sprints" [(ngModel)]="selectedsprint" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}">
+                </p-dropdown>
+
+                
+            </div>
+        </td>
+        <td>
+            <div class="p-col-8 ui-toolbar-group-right">
+            
+                <button pButton type="button"  icon="pi pi-search" (click)="populate_bdd_data_db()"
+                
+                ></button>  
+                
+               
+            </div>
+            
+
+        </td>
+        <div class="p-col-8 ui-toolbar-group-right">
+            <button pButton type="button" icon="pi pi-times" class="ui-button-danger"(click)="clear_data()"></button>
+        </div>
+    </tr>
+        </table>
+        </div>
+       
+    </p-toolbar>
+    <div class="container">
+        <table class="table" #table>
+    <p-table [value]="bdd_data" *ngIf="is_visible">
+        
+        <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix" style="text-align: left">
+               
+                <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+               
+            </div>
+        </ng-template>
         <ng-template pTemplate="header">
             <tr> 
-                <th>Scrum Team</th>
-                <th>Total Fixed Bugs</th>
+                
+                <th  pSortableColumn="Area_Path">Scrum Team<p-sortIcon field="Area_Path"></p-sortIcon></th>
+                <th  pSortableColumn="Total_Fixed_Bugs">Total Bugs<p-sortIcon field="Total_Fixed_Bugs"></p-sortIcon></th>
+                <th  pSortableColumn="BDD_Covered">Covered in Test plans<p-sortIcon field="BDD_Covered"></p-sortIcon></th>
+                <th  pSortableColumn="Not_BDD_Covered">Not Covered in Test plans<p-sortIcon field="Not_BDD_Covered"></p-sortIcon></th>
+                <th  pSortableColumn="GeneralRegression">General Regression<p-sortIcon field="GeneralRegression"></p-sortIcon></th>
+             
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-bdd_data>
+            
+            <tr>
+                <td>{{bdd_data.Area_Path}}</td>
+                <td>{{bdd_data.Total_Fixed_Bugs}}</td>
+                <td>{{bdd_data.BDD_Covered}}</td>
+                <td>{{bdd_data.Not_BDD_Covered}}</td>
+                <td>{{bdd_data.GeneralRegression}}</td>
+              
+            </tr>
+        </ng-template>
+    </p-table>
+    
+    <p-table [value]="bdd_data" *ngIf="is_visible_Qa_non_fixed_grid">
+        <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix" style="text-align: left">
+               
+                <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+               
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr> 
+                <th  pSortableColumn="Area_Path">Scrum Team<p-sortIcon field="Area_Path"></p-sortIcon></th>
+                <th>Total Non-Fixed Bugs</th>
                 <th>Covered in BDD</th>
                 <th>Not Covered in BDD</th>
                 <th>General Regression</th>
@@ -33,15 +109,58 @@
         <ng-template pTemplate="body" let-bdd_data>
             
             <tr>
-                <td>{{bdd_data.Team}}</td>
-                <td>{{bdd_data.Total_fixed_bugs}}</td>
-                <td>{{bdd_data.total_bdd_covered}}</td>
-                <td>{{bdd_data.total_bdd_not_covered}}</td>
-                <td>{{bdd_data.total_general_regression}}</td>
+                <td>{{bdd_data.Area_Path}}</td>
+                <td>{{bdd_data.Total_Fixed_Bugs}}</td>
+                <td>{{bdd_data.BDD_Covered}}</td>
+                <td>{{bdd_data.Not_BDD_Covered}}</td>
+                <td>{{bdd_data.GeneralRegression}}</td>
               
             </tr>
         </ng-template>
     </p-table>
-    
-   
+
+
+    <p-table [value]="report_bugs_data" *ngIf="is_visible_qa_bugs_summary">
+        <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix" style="text-align: left">
+               
+                <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+               
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr> 
+                <th  pSortableColumn="Area_Path">Scrum Team<p-sortIcon field="Area_Path"></p-sortIcon></th>
+                <th  pSortableColumn="QA_name">QA<p-sortIcon field="QA_name"></p-sortIcon></th>
+                <th  pSortableColumn="total_qa_reported">Total Reported Bugs<p-sortIcon field="total_qa_reported"></p-sortIcon></th>
+                <th  pSortableColumn="total_fixed">Total Fixed Bugs<p-sortIcon field="total_fixed"></p-sortIcon></th>
+                <th  pSortableColumn="total_p1">P1<p-sortIcon field="total_p1"></p-sortIcon></th>
+                <th  pSortableColumn="total_p2">P2<p-sortIcon field="total_p2"></p-sortIcon></th>
+                <th  pSortableColumn="total_p3">P3<p-sortIcon field="total_p3"></p-sortIcon></th>
+                <th  pSortableColumn="rejected_bugs">Rejected Bugs<p-sortIcon field="rejected_bugs"></p-sortIcon></th>
+                <th  pSortableColumn="active_bugs">Active New Bugs<p-sortIcon field="active_bugs"></p-sortIcon></th>
+             
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-report_bugs_data>
+            
+            <tr>
+                <td>{{report_bugs_data.Area_Path}}</td>
+                <td>{{report_bugs_data.QA_name}}</td>
+                <td>{{report_bugs_data.total_qa_reported}}</td>
+                <td>{{report_bugs_data.total_fixed}}</td>
+                <td>{{report_bugs_data.total_p1}}</td>
+                <td>{{report_bugs_data.total_p2}}</td>
+                <td>{{report_bugs_data.total_p3}}</td>
+                <td>{{report_bugs_data.rejected_bugs}}</td>
+                <td>{{report_bugs_data.active_bugs}}</td>
+               
+
+              
+            </tr>
+        </ng-template>
+    </p-table>
+</table>
+
+</div>
 </div>

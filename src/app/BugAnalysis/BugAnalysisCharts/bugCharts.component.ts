@@ -1,7 +1,16 @@
-import { Component, OnInit,ViewChild, ElementRef} from '@angular/core';
+import { Component,OnInit,ViewChild, ElementRef} from '@angular/core';
+
 import { CollectDataService } from 'src/app/collect-data.service';
 import * as XLSX from 'xlsx';
+import {MessageService} from 'primeng/api';
+import { SortEvent } from 'primeng/api';
+import {ToastModule} from 'primeng/toast';
 import {InputTextModule} from 'primeng/inputtext';
+import { empty } from 'rxjs';
+import { RouteConfigLoadEnd } from '@angular/router';
+import { DataSettingsComponent } from '../DataSettings.component';
+import { AppComponent } from '../../app.component';
+ 
 @Component({
   selector: 'app-bug',
   templateUrl: './bugCharts.component.html',
@@ -9,58 +18,45 @@ import {InputTextModule} from 'primeng/inputtext';
 })
 export class BugChartsComponent implements OnInit {
    
-  
+ 
   @ViewChild('table') table: ElementRef;
   testdata: any[] = [];
-  title = 'AngularDashboard';
+  title = 'Bug Tracebility Matrix';
   data: any;
+  pieOptions:any;
+  pieOptions2:any;
+  pieOptions3:any;
+  pieOptions4:any;
+
+  pieOptions6:any;
+  pieOptions7:any;
+  pieOptions8:any;
+  pieOptions9:any;
+  pieOptions10:any;
   data2: any;
   data3: any;
   data4: any;
   data5: any;
   data6: any;
-  siteComparisionsData: any;
-  shiftLeftData: any;
-  shiftLeftOptions: any;
-  options2: any;
-  options: any;
+  data7: any;
+  data8: any;
+  data9: any;
+  AllData4:any;
+  graphData: any;
+  selectedsprint:any[]
+
+
   sideBarVisibility: boolean;
-  teamname: any[];
-  selectedteams:any[]
-  releaseCycles:any[] = []
-  selectedReleaseCycle:any[] = []
-  AllData: any[] = [];
-  AllData2: any[] = [];
-  AllData3: any[] = [];
-  AllData4: any[] = [];
+  is_visible: boolean= false;
   prod_labels:String[]=[];
   prod_data:number[]=[];
-  
+  sprints: any[] = [{label:'Select',value:'Select'}];
 
-  constructor(private service: CollectDataService) {
+  sprint:string;
+  constructor(private service: CollectDataService,private messageService: MessageService,private AppComponent:AppComponent) {
 
-    
-    
-    this.data5 = {
-     
-      labels:  ['Document System', 'IR', 'Data Processing'],
-      datasets: [
-          {
-              label: 'Product wise',
-              backgroundColor: '#42A5F5',
-              borderColor: '#1E88E5',
-              data: [65, 59, 80, 81, 56, 55, 40,65, 59, 80, 81, 56, 55, 40]
-          }
-         
-      ]
-               
-      };
-
-      
+    AppComponent.heading_text='Dashboard Trends'
     };
-
-     
-   
   exportExcel() {
 
     
@@ -71,100 +67,488 @@ export class BugChartsComponent implements OnInit {
     /* save to file */
     XLSX.writeFile(wb, 'BugTracebilityReportCharts.xlsx');
 }
+clear_data()
 
-saveAsExcelFile(buffer: any, fileName: string): void {
-    import("file-saver").then(FileSaver => {
-        let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-        let EXCEL_EXTENSION = '.xlsx';
-        const data: Blob = new Blob([buffer], {
-            type: EXCEL_TYPE
-        });
-        FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-    });
+{
+
+  this.is_visible=false
+  this.data8= [];
+
+  this.data= [];
+  this.data2= [];
+  this.data3= [];
+  this.data4= [];
+  this.data5= [];
+  this.data6= [];
+  this.data7= [];
+  this.data8= [];
+  this.data9= [];
+  this.AllData4= [];
+  this.graphData= [];
+  this.selectedsprint=[];
 }
-  ngOnInit() {
-     
-    this.sideBarVisibility = true
+
+
+
+
+populate_charts()
+{
+
+ 
+
+    
+  this.pieOptions = {
    
     
-
-
-
-    this.service.collect_product_wise_chart_data().subscribe(data=> {
-
-      for (let item of data[0])
-      {
-      // console.log(JSON.parse(item).product_name)
     
-      this.prod_labels.push(String(JSON.parse(item).product_name))
-      this.prod_data.push(Number(JSON.parse(item).total_count))
-      this.data5 = {
+    
+    responsive:true,
+    showAllTooltips: true,
+    tooltips: {
+      
+      
+      
+      callbacks: {
+        label: function(tooltipItem, data) {
+          var allData = data.datasets[tooltipItem.datasetIndex].data;
+          var tooltipLabel = data.labels[tooltipItem.index];
+          var tooltipData = allData[tooltipItem.index];
+          var total = 0;
+          for (var i in allData) {
+            total += allData[i];
+          }
+          var tooltipPercentage = Math.round((tooltipData / total) * 100);
+          return   tooltipData +'%';
+        }
+      },
+      x: 20,
+      yAlign: 'center',
+      xAlign: 'center',
+    },
+  
+    
+   
+    legend: {
+        position: 'right',
+       
+    },
+    title: {
+      display: true,
+      text: 'Test Plan Covered -Valid QA Bugs',
+      fontSize: 16
+    }, 
+}
+
+this.pieOptions2 = {
+  legend: {
+      position: 'right',
      
-        labels: this.prod_labels,
+  },
+  tooltips: {
+    
+    
+    callbacks: {
+   
+      label: function(tooltipItem, data) {
+        var allData = data.datasets[tooltipItem.datasetIndex].data;
+        var tooltipLabel = data.labels[tooltipItem.index];
+        var tooltipData = allData[tooltipItem.index];
+        var total = 0;
+        for (var i in allData) {
+          total += allData[i];
+        }
+        
+        var tooltipPercentage = Math.round((tooltipData / total) * 100);
+         console.log(tooltipData)
+        if (tooltipData=="0.0")
+        {
+           tooltipLabel.tooltipHidden;
+        }
+         else
+         {
+        return   tooltipData +'%';
+         }
+      }
+    },
+  
+    
+  },
+  position: 'custom',
+ 
+  showAllTooltips: true,
+
+  title: {
+    display: true,
+    text: 'Test Plan Covered -Valid UAT Bugs',
+    fontSize: 16
+  }, 
+}
+
+this.pieOptions3 = {
+  legend: {
+      position: 'right',
+     
+  },
+  tooltips: {
+    callbacks: {
+      label: function(tooltipItem, data) {
+        var allData = data.datasets[tooltipItem.datasetIndex].data;
+        var tooltipLabel = data.labels[tooltipItem.index];
+        var tooltipData = allData[tooltipItem.index];
+        var total = 0;
+        for (var i in allData) {
+          total += allData[i];
+        }
+        var tooltipPercentage = Math.round((tooltipData / total) * 100);
+        return  tooltipData +'%';
+      }
+    },
+    x: 20,
+    yAlign: 'center',
+    xAlign: 'center',
+  },
+
+  responsive:true,
+  showAllTooltips: true,
+
+  title: {
+    display: true,
+    text: 'Bugs Identification Process',
+    fontSize: 16
+  }, 
+}
+
+this.pieOptions4 = {
+  legend: {
+      position: 'right',
+     
+  },
+  tooltips: {
+  
+    callbacks: {
+      label: function(tooltipItem, data) {
+        var allData = data.datasets[tooltipItem.datasetIndex].data;
+        var tooltipLabel = data.labels[tooltipItem.index];
+        var tooltipData = allData[tooltipItem.index];
+        var total = 0;
+        for (var i in allData) {
+          total += allData[i];
+        }
+        var tooltipPercentage = Math.round((tooltipData / total) * 100);
+        return  tooltipData +'%';
+      }
+    },
+    yAlign: 'bottom',
+    xAlign: 'center',
+  },
+
+  responsive:true,
+  showAllTooltips: true,
+
+  title: {
+    display: true,
+    text: 'Bugs Identification By Role',
+    fontSize: 16
+  }, 
+}
+
+this.pieOptions6 = {
+  legend: {
+      position: 'right',
+     
+  },
+  tooltips: {
+   
+    callbacks: {
+      label: function(tooltipItem, data) {
+        var allData = data.datasets[tooltipItem.datasetIndex].data;
+        var tooltipLabel = data.labels[tooltipItem.index];
+        var tooltipData = allData[tooltipItem.index];
+        var total = 0;
+        for (var i in allData) {
+          total += allData[i];
+        }
+        var tooltipPercentage = Math.round((tooltipData / total) * 100);
+       
+        return  tooltipData +'%';
+      }
+    },
+    yAlign: 'bottom',
+    xAlign: 'center',
+    
+  },
+
+  responsive:true,
+  showAllTooltips: true,
+
+  title: {
+    display: true,
+    text: 'Bugs Severity',
+    fontSize: 16
+  }, 
+}
+
+this.pieOptions7 = {
+  legend: {
+      position: 'right',
+     
+  },
+  tooltips: {
+    callbacks: {
+      label: function(tooltipItem, data) {
+        var allData = data.datasets[tooltipItem.datasetIndex].data;
+        var tooltipLabel = data.labels[tooltipItem.index];
+        var tooltipData = allData[tooltipItem.index];
+        var total = 0;
+        for (var i in allData) {
+          total += allData[i];
+        }
+        var tooltipPercentage = Math.round((tooltipData / total) * 100);
+        return tooltipData +'%';
+      }
+    },
+    yAlign: 'bottom',
+    xAlign: 'center',
+  },
+
+  responsive:true,
+  showAllTooltips: true,
+
+  title: {
+    display: true,
+    text: 'Test Plan Covered Not Valid QA Bugs',
+    fontSize: 16
+  }, 
+}
+
+
+this.pieOptions8 = {
+  legend: {
+      position: 'bottom',
+     
+  },
+  tooltips: {
+ 
+     
+    
+    callbacks: {
+      label: function(tooltipItem, data) {
+        var allData = data.datasets[tooltipItem.datasetIndex].data;
+        var tooltipLabel = data.labels[tooltipItem.index];
+        var tooltipData = allData[tooltipItem.index];
+        var total = 0;
+        for (var i in allData) {
+          total += allData[i];
+        }
+       
+        return  tooltipData +'%';
+      }
+    },
+
+
+    yAlign: 'bottom',
+    xAlign: 'center',
+    
+  },
+
+  responsive:true,
+  showAllTooltips: true,
+
+  title: {
+    display: true,
+    text: 'Bugs RCA Catgeory',
+    fontSize: 16
+  }, 
+}
+
+this.pieOptions9 = {
+  legend: {
+      position: 'right',
+     
+  },
+  tooltips: {
+    callbacks: {
+      label: function(tooltipItem, data) {
+        var allData = data.datasets[tooltipItem.datasetIndex].data;
+        var tooltipLabel = data.labels[tooltipItem.index];
+        var tooltipData = allData[tooltipItem.index];
+        var total = 0;
+        for (var i in allData) {
+          total += allData[i];
+        }
+        var tooltipPercentage = Math.round((tooltipData / total) * 100);
+        return  tooltipData +'%';
+      }
+    },
+    yAlign: 'bottom',
+    xAlign: 'center',
+  },
+
+  responsive:true,
+  showAllTooltips: true,
+
+  title: {
+    display: true,
+    text: 'Bugs Identification Phase',
+    fontSize: 16
+  }, 
+}
+this.pieOptions10 = {
+  legend: {
+      position: 'right',
+     
+  },
+  
+ 
+  responsive:true,
+  showAllTooltips: true,
+
+  title: {
+    display: true,
+    text: 'Product Wise',
+    fontSize: 16
+  }, 
+
+  tooltips: {
+   yAlign: 'bottom',
+    xAlign: 'center',
+    callbacks: {
+      title: function() {}
+   
+    }
+},
+ 
+
+
+
+
+}
+
+if(this.selectedsprint[0]== undefined)
+  {
+   
+    this.is_visible=false
+    this.messageService.add({severity:'error', summary:'Please Select Sprint!', detail:'Via BugAnalysis Team'});
+  }
+
+else
+{
+  this.sprint=this.selectedsprint.toString().replace('\\','-')
+  this.is_visible=true
+  this.messageService.add({severity:'success', summary:'Data Fetched From Database', detail:'Via BugAnalysis Team'});
+  this.service.collect_RCA_pie_chart_data(this.sprint.replace('\\','-')).subscribe(data=> {
+    for (let item of data[0])
+      {
+    
+    this.data8 = {
+      labels: ['Data Issue','Coding Issue','Environmental Specific','Design Related','Missing Requirement'],
+       
+      datasets: [
+          {
+             
+              data: [JSON.parse(item).data_issue_perc,JSON.parse(item).coding_issue_perc,JSON.parse(item).environmental_specific_perc,
+                JSON.parse(item).desing_related_perc,JSON.parse(item).missing_req_perc
+              
+              
+              ],
+              
+              backgroundColor: [
+                  "#D49385",
+                  "#A1BEEC",
+                  "#A7D375",
+                  "#A9795B",
+                  "#F7660B"
+                
+
+              ],
+              hoverBackgroundColor: [
+                "#D49385",
+                "#A1BEEC",
+                "#A7D375",
+                "#A9795B",
+                "#F7660B"
+              
+
+              ]
+          }]    
+      };
+    }
+    
+    
+  })
+
+  
+  this.service.collect_product_wise_chart_data(this.sprint.replace('\\','-')).subscribe(data=> {
+   
+
+
+    this.graphData=[];
+    this.prod_labels=[];
+    this.prod_data=[];
+    for (let item of data[0])
+    {
+  
+    
+  
+    this.prod_labels.push(String(JSON.parse(item).product_name))
+    this.prod_data.push(Number(JSON.parse(item).total_count))
+
+
+    this.graphData = {
+   
+      labels: this.prod_labels,
+      datasets: [
+          {
+
+              label: 'Total',
+              backgroundColor: '#42A5F5',
+              borderColor: '#1E88E5',
+              data: this.prod_data
+          },
+          
+         
+      ]
+
+               
+      };
+      
+    }
+
+
+  })
+
+     this.service.collect_priority_GetQA_NonQA_Charts(this.sprint.replace('\\','-')).subscribe(data=> {
+      for (let item of data[0])
+        {
+      
+      this.data4 = {
+        labels: ['QA','Other than QA'],
         datasets: [
             {
-                label: 'Product wise',
-                backgroundColor: '#42A5F5',
-                borderColor: '#1E88E5',
-                data: this.prod_data
-            },
-            
-           
-        ]
-  
-                 
-        };
-        
-      }
-     }) 
-     
-     
-
-     console.log(this.data5)
+              
+                data: [JSON.parse(item).qa_perc,JSON.parse(item).other_perc],
+                backgroundColor: [
+                    "#8bad9d",
+                    "#E9F3BE"
+                ],
+                hoverBackgroundColor: [
+                    "#8bad9d",
+                    "#E9F3BE"
+                ]
+            }]    
     
-
-     this.service.collect_bdd_charts_data().subscribe(data=> {
-
-      for (let item of data[0])
-      {
-      this.AllData.push(JSON.parse(item))
-        
+        };
       }
-     }) 
+    })
+
      
-     this.service.collect_bdd_uat_charts_data().subscribe(data=> {
-
-      for (let item of data[0])
-      {
-      this.AllData2.push(JSON.parse(item))
-        
-      }
-     }) 
-
-     this.service.collect_not_valid_bugs_chart_data().subscribe(data=> {
-
-      for (let item of data[0])
-      {
-      this.AllData3.push(JSON.parse(item))
-        
-      }
-     }) 
-
-     this.service.collect_priority_GetQA_NonQA_Charts().subscribe(data=> {
-
-      for (let item of data[0])
-      {
-      this.AllData4.push(JSON.parse(item))
-        
-      }
-     }) 
-     
-    this.service.collect_bdd_charts_data().subscribe(data=> {
+    this.service.collect_get_valid_qa_bugs(this.sprint.replace('\\','-')).subscribe(data=> {
       for (let item of data[0])
         {
      
       this.data = {
         labels: ['Not Covered in BDD','Covered in BDD','General Regression'],
+         
         datasets: [
             {
               
@@ -179,12 +563,15 @@ saveAsExcelFile(buffer: any, fileName: string): void {
                     "#40bf40",
                     "#FFCE56"
                 ]
-            }]    
+            }]
+            
+           
         };
-      }
+       
+    }
     })
 
-    this.service.collect_bdd_uat_charts_data().subscribe(data=> {
+    this.service.collect_bdd_uat_charts_data(this.sprint.replace('\\','-')).subscribe(data=> {
       for (let item of data[0])
         {
        
@@ -207,14 +594,44 @@ saveAsExcelFile(buffer: any, fileName: string): void {
             }]    
         };
       }
+      
+      
     })
 
     
-    this.service.collect_not_valid_bugs_chart_data().subscribe(data=> {
+    this.service.collect_RCA_how_bug_foundchart_data(this.sprint.replace('\\','-')).subscribe(data=> {
       for (let item of data[0])
         {
       
       this.data3 = {
+        labels: ['Manual Testing','Automated Testing'],
+        datasets: [
+            {
+              
+                data: [JSON.parse(item).manual_issue_perc,JSON.parse(item).automated_issue_perc],
+                backgroundColor: [
+                    "#2D5820",
+                    "#5D2249"
+                   
+                ],
+                hoverBackgroundColor: [
+                    "#2D5820",
+                    "#5D2249"
+                 
+                ]
+            }]    
+        };
+      }
+    })
+
+    
+  
+
+    this.service.collect_not_valid_bugs_chart_data(this.sprint.replace('\\','-')).subscribe(data=> {
+      for (let item of data[0])
+        {
+      
+      this.data7 = {
         labels: ['Not Covered in BDD','Covered in BDD','General Regression'],
         datasets: [
             {
@@ -234,37 +651,10 @@ saveAsExcelFile(buffer: any, fileName: string): void {
         };
       }
     })
-
-    this.service.collect_priority_GetQA_NonQA_Charts().subscribe(data=> {
-      for (let item of data[0])
-        {
-      
-      this.data4 = {
-        labels: ['QA','Other than QA'],
-        datasets: [
-            {
-              
-                data: [JSON.parse(item).qa_perc,JSON.parse(item).other_perc],
-                backgroundColor: [
-                    "#8bad9d",
-                    "#ffffdd"
-                ],
-                hoverBackgroundColor: [
-                    "#8bad9d",
-                    "#ffffdd"
-                ]
-            }]    
-        };
-      }
-    })
-
-  
-
-      
     
 
 
-    this.service.collect_priority_bugs_chart().subscribe(data=> {
+    this.service.collect_priority_bugs_chart(this.sprint.replace('\\','-')).subscribe(data=> {
       for (let item of data[0])
         {
       
@@ -288,7 +678,89 @@ saveAsExcelFile(buffer: any, fileName: string): void {
         };
       }
     })
+  
 
+   
+    this.service.collect_RCA_bug_identification_phase_chart_data(this.sprint.replace('\\','-')).subscribe(data=> {
+      for (let item of data[0])
+        {
+      
+      this.data9 = {
+        labels: ['In Sprint','In Regression','In Production'],
+        datasets: [
+            {
+              
+                data: [JSON.parse(item).total_sprint_perc,JSON.parse(item).total_regression_perc,JSON.parse(item).total_production_perc],
+                backgroundColor: [
+                    "#e6f7ff",
+                    "#00ffcc",
+                    " #99ff99"
+                  
+
+                ],
+                hoverBackgroundColor: [
+                  "#e6f7ff",
+                  "#00ffcc",
+                  "#99ff99"
+                
+
+                ]
+            }]    
+        };
+      }
+    })
+
+  
+  }
+
+}
+customSort(event: SortEvent) {
+  event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null)
+          result = -1;
+      else if (value1 != null && value2 == null)
+          result = 1;
+      else if (value1 == null && value2 == null)
+          result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+          result = value1.localeCompare(value2);
+      else
+          result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+      return (event.order * result);
+  });
+}
+  ngOnInit() {
+     
+    this.sideBarVisibility = true
+   
+
+    this.service.collect_iterations_all().subscribe(data=> {
+    
+     
+         
+      this.selectedsprint=this.sprints[0]      
+        
+          for (let item of data[0])
+          {
+            let temp_item={label:"",value:""}
+            temp_item.label=JSON.parse(item).team
+            temp_item.value=JSON.parse(item).team
+            this.sprints.push(temp_item)
+         
+            
+          }
+        
+   
+            
+    
+            
+    })
+  
     
   }
 
