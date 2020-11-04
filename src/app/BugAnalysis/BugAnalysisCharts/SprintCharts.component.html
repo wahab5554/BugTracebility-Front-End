@@ -1,0 +1,154 @@
+<p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
+<div class="p-grid" style="display: block;  padding: 5px">
+    <p-toolbar>
+        <div class="p-col-4 ui-toolbar-group-left">
+            <table>
+
+          <tr>
+
+        
+       
+            <td>
+
+          
+            <div class="ui-inputgroup">
+                
+                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Sprint: </label>
+                <p-dropdown [options]="sprints" [(ngModel)]="selectedsprint" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}">
+                </p-dropdown>
+
+                
+            </div>
+        </td>
+        <td>
+
+          
+            <div class="ui-inputgroup">
+                
+                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Comparison Sprint: </label>
+                <p-dropdown [options]="sprints" [(ngModel)]="selectedCompsprint" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}">
+                </p-dropdown>
+
+                
+            </div>
+        </td>
+        <td>
+            <div class="p-col-8 ui-toolbar-group-right">
+            
+                <button pButton type="button"  icon="pi pi-search" (click)="populate_charts()"
+                
+                ></button>  
+                
+               
+            </div>
+            
+
+        </td>
+        <div class="p-col-8 ui-toolbar-group-right">
+            <button pButton type="button" icon="pi pi-times" class="ui-button-danger"(click)="clear_data()"></button>
+        </div>
+    </tr>
+        </table>
+        </div>
+       
+    </p-toolbar>
+    <div class="container">
+        <table class="table" #table *ngIf="is_visible">
+        
+            <tr>
+         
+                <p-table [value]="data3" *ngIf="is_visible">
+                    <ng-template pTemplate="caption">
+                       
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr> 
+                            <th>Valid Bug Difference</th>
+                            <th>Rejected Bug Difference</th>
+                            <th>Active Bugs Difference</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-data3>
+                        
+                        <tr>
+                          
+                            <td>
+                                <i class="pi pi-arrow-down" style="font-size: 2rem;color:red;" *ngIf="greaterThan(data3.valid_diff)"></i>
+                                <i class="pi pi-arrow-up" style="font-size: 2rem;color:green;" *ngIf="lesserThan(data3.valid_diff)"></i>
+                                <i class="pi pi-arrow-down" style="font-size: 2rem;color:red;" *ngIf="equalto(data3.valid_diff)"></i>
+                                {{data3.valid_diff<0?-1*data3.valid_diff:data3.valid_diff}}</td>
+                            <td>
+                                <i class="pi pi-arrow-up" style="font-size: 2rem;color:green;" *ngIf="greaterThan(data3.rejected_diff)"></i>
+                                <i class="pi pi-arrow-down" style="font-size: 2rem;color:red;" *ngIf="lesserThan(data3.rejected_diff)"></i>
+                                <i class="pi pi-arrow-up" style="font-size: 2rem;color:green;" *ngIf="equalto(data3.rejected_diff)"></i>{{data3.rejected_diff<0?-1*data3.rejected_diff:data3.rejected_diff}}</td>
+                            <td>
+                                <i class="pi pi-arrow-up" style="font-size: 2rem;color:green;" *ngIf="greaterThan(data3.active_diff)"></i>
+                                <i class="pi pi-arrow-down" style="font-size: 2rem;color:red;" *ngIf="lesserThan(data3.active_diff)"></i>
+                                <i class="pi pi-arrow-up" style="font-size: 2rem;color:green;" *ngIf="equalto(data3.active_diff)"></i>
+                                {{data3.active_diff<0?-1*data3.active_diff:data3.active_diff}}</td>
+                          
+                        </tr>
+                    </ng-template>
+                </p-table>
+    
+            </tr>
+            <tr>
+    
+               
+            </tr>
+    
+  
+
+      
+            <tr>
+                
+               <Td>
+                <p-table [value]="data4">
+         
+                    <ng-template pTemplate="header">
+                        <tr> 
+                           
+                            
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-AllData3>
+                        
+                        <tr>
+                            
+                            
+                            
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+            </Td>
+             
+               
+            </tr>
+         
+                <tr>
+                    <td  colspan="3">
+                       
+                    
+                        <p-chart type="horizontalBar" [data]="data"  [options]="chartOptions"></p-chart>
+        
+                    </td>
+                  
+        
+              
+                    </tr>
+                <tr>
+               
+             
+            </tr>
+
+            
+        </table>
+    
+    </div>
+  
+
+</div>

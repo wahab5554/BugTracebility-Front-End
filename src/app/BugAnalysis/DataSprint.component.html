@@ -1,0 +1,141 @@
+<p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
+<p-dialog header="Add Sprint" [(visible)]="display"    >
+    <table [style]="{minWidth: '50vw',height: '20vw'}">
+   <tr>
+   <Td>
+   Sprint
+   </Td>
+   <Td>
+ 
+     <input type="text" pInputText  [(ngModel)]="sprint" />
+ 
+ 
+   </Td>
+   </tr>
+   <tr>
+   <td>
+     Start Date
+   </td>
+    
+     <Td>
+   
+        <p-calendar [(ngModel)]="value1" dateFormat="dd.mm.yy"></p-calendar>
+   
+   
+     </Td>
+     </tr>
+     <tr>
+ 
+ 
+    
+     <Td>
+ 
+         End Date
+       
+       
+         </Td>
+         <Td>
+       
+            <p-calendar [(ngModel)]="value2" dateFormat="dd.mm.yy"></p-calendar>
+       
+       
+         </Td>
+ </tr>
+ <tr>
+ 
+ <td>
+     <button pButton type="button" label="Save" (click)="save_data(sprint,value1,value2)"  ></button> 
+ </td>
+ 
+ </tr>
+    </table>
+ </p-dialog>
+<div class="p-grid" style="display: block;  padding: 5px">
+    <p-toolbar>
+        <div class="p-col-4 ui-toolbar-group-left">
+            <div class="ui-inputgroup">
+                <tr>
+                    
+                        <td>
+                            <div class="ui-inputgroup">
+                                
+                                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Sprints: </label>
+                                <p-dropdown [options]="sprinttype" [(ngModel)]="selectedType" [virtualScroll]="true"
+                                    [panelStyle]="{minWidth:'30em'}" >
+                                </p-dropdown>
+                
+                                
+                            </div>
+                          </td>
+
+                   <td>
+
+                   </td>
+                   
+                
+             
+              
+               
+                   
+          
+               <td >
+                <button pButton type="button" label="Load" class="button-secondary" (click)="get_sprints(selectedType)"></button>
+               </td>
+            
+               <td>
+              
+               </td>
+                </tr>
+               
+            </div>
+            <div class="ui-inputgroup">
+                
+              
+              
+            </div>
+          
+        </div>
+        
+        
+    </p-toolbar>
+    
+    <div class="container">
+        <table class="table" #table>
+        
+      
+            
+    <p-table [value]="sprints"  *ngIf="is_visible">
+     
+        <ng-template pTemplate="header"  >
+            <tr> 
+                <th>Sprint</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>Is_Current</th>
+                <th>Edit</th>
+                <th>Set Current</th>
+                <th>Remove Current</th>
+               
+
+            </tr>
+        </ng-template> 
+        <ng-template pTemplate="body" let-sprints>
+            
+            <tr>
+                <td>{{sprints.sprint}}</td>
+                 <td> <p-inputMask mask="9999-99-99" [(ngModel)]="sprints.start_date" placeholder="9999-99-99" slotChar="yyyy-mm-dd"></p-inputMask></td>
+                 <td> <p-inputMask mask="9999-99-99" [(ngModel)]="sprints.end_date" placeholder="9999-99-99" slotChar="yyyy-mm-dd"></p-inputMask></td>
+                 <td>{{sprints.is_current}}</td>
+                <td>  <button pButton type="button" label="Update" (click)="UpdateDate(sprints.sprint,sprints.start_date,sprints.end_date)"  ></button> </td>
+                <td><button id="disabled-btn" type="button"  (click)="set_current(sprints.sprint)" pButton label="Set"></button></td>
+                <td><button id="disabled-btn" type="button"  (click)="remove_current(sprints.sprint)" pButton label="Remove"></button></td>
+              
+            </tr>
+        </ng-template>
+    </p-table>
+   
+   
+</table>
+
+</div>
+</div>

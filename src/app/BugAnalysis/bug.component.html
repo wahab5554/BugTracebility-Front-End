@@ -1,74 +1,115 @@
 <p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
 
 <div class="p-grid" style="display: block;  padding: 5px">
+    
+
+   
     <p-toolbar>
         <div class="p-col-4 ui-toolbar-group-left">
+            <table>
+
+          <tr>
+
+        
+          <td>
             <div class="ui-inputgroup">
                 
                 <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Team: </label>
                 <p-dropdown [options]="teamname" [(ngModel)]="selectedteams" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}" >
+                </p-dropdown>
+
+                
+            </div>
+          </td>
+            <td>
+
+          
+            <div class="ui-inputgroup">
+                
+                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Sprint: </label>
+                <p-dropdown [options]="sprints" [(ngModel)]="selectedsprint" [virtualScroll]="true"
                     [panelStyle]="{minWidth:'30em'}">
                 </p-dropdown>
+
+                
             </div>
-        </div>
-        <div class="p-col-8 ui-toolbar-group-right">
-            <button pButton type="button"  icon="pi pi-search" (click)="populate_bug_data()"
-            
-            ></button> &nbsp;&nbsp;
-            
-            <button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button>
-        </div>
+        </td>
         
+        <td>
+            <div class="p-col-8 ui-toolbar-group-right">
+            
+                <button pButton type="button"  icon="pi pi-search" (click)="populate_bug_data_db()"
+                
+                ></button>  
+                
+               
+            </div>
+            
+
+        </td>
+        <div class="p-col-8 ui-toolbar-group-right">
+            <button pButton type="button" icon="pi pi-times" class="ui-button-danger"(click)="clear_data()"></button>
+        </div>
+
+       
+    </tr>
+        </table>
+        </div>
+       
     </p-toolbar>
-    
+
     <div class="container">
         <table class="table" #table>
         
       
             
-    <p-table [value]="testdata" *ngIf="is_visible" >
+    <p-table [value]="Bugs_data" *ngIf="is_visible" >
         <ng-template pTemplate="caption">
             <div class="ui-helper-clearfix" style="text-align: left">
-    
+               
                 <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
                
             </div>
+             
         </ng-template>
         
         <ng-template pTemplate="header"  >
             <tr> 
-                <th>Role</th>
-                <th>Created By</th>
-                <th>Total Bugs</th>
-                <th>Total Fixed</th>
-                <th>P1</th>
-                <th>P2</th>
-                <th>P3</th>
-                <th>As Designed/Wont Fix</th>
-                <th>Cannot Reproduce</th>
-                <th>Active/New</th>
+                <th  pSortableColumn="role">Role<p-sortIcon field="role"></p-sortIcon></th>
+                <th pSortableColumn="created_by">Created By<p-sortIcon field="created_by"></p-sortIcon></th>
+                <th pSortableColumn="total_bugs">Total Bugs <p-sortIcon field="total_bugs"></p-sortIcon></th>
+                <th pSortableColumn="total_fixed">Total Fixed <p-sortIcon field="total_fixed"></p-sortIcon></th>
+                <th  pSortableColumn="p1">P1<p-sortIcon field="p1"></p-sortIcon></th>
+                <th  pSortableColumn="p2">P2<p-sortIcon field="p2"></p-sortIcon></th>
+                <th  pSortableColumn="p3">P3<p-sortIcon field="p3"></p-sortIcon></th>
+                <th  pSortableColumn="as_designed">As Designed/Wont Fix<p-sortIcon field="as_designed"></p-sortIcon></th>
+                <th style="word-wrap: break-word;" width="10%"  pSortableColumn="other_bugs">Cannot Reproduce/Deferred/Duplicate/obsolete<p-sortIcon field="other_bugs"></p-sortIcon></th>
+                <th  pSortableColumn="active_bugs">Active/New<p-sortIcon field="active_bugs"></p-sortIcon></th>
+                <th  pSortableColumn="iteration_path">Iteration<p-sortIcon field="iteration_path"></p-sortIcon></th>
            
 
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-testdata>
+        <ng-template pTemplate="body" let-Bugs_data>
             
             <tr>
-                <td>{{testdata.role}}</td>
-                <td>{{testdata.createdby}}</td>
-                <td>{{testdata.str_total_bugs}}</td>
-                <td>{{testdata.str_total_fixed}}</td>
-                <td>{{testdata.str_P1}}</td>
-                <td>{{testdata.str_P2}}</td>
-                <td>{{testdata.str_P3}}</td>
-                <td>{{testdata.str_total_as_designed}}</td>
-                <td>{{testdata.str_can_reproduce_bugs}}</td>
-                <td>{{testdata.str_total_active}}</td>
+                <td>{{Bugs_data.role}}</td>
+                <td>{{Bugs_data.created_by}}</td>
+                <td>{{Bugs_data.total_bugs}}</td>
+                <td>{{Bugs_data.total_fixed}}</td>
+                <td>{{Bugs_data.p1}}</td>
+                <td>{{Bugs_data.p2}}</td>
+                <td>{{Bugs_data.p3}}</td>
+                <td>{{Bugs_data.as_designed}}</td>
+                <td>{{Bugs_data.other_bugs}}</td>
+                <td>{{Bugs_data.active_bugs}}</td>
+                <td>{{Bugs_data.iteration_path}}</td>
               
             </tr>
         </ng-template>
     </p-table>
-    <p-table [value]="pm_bugs_kosher" [resizableColumns]="true" *ngIf="testdata.length==0 && is_visible">
+    <p-table [value]="BUGS_Total" [resizableColumns]="true" *ngIf="BUGS_Total.length==0 && is_visible">
         <ng-template pTemplate="caption">
             <tr>
                 <th colspan="3"> Team wise summary</th>
@@ -84,31 +125,37 @@
         
        
     </p-table>
-    <p-table [value]="BUGS_Total" *ngIf="testdata.length>0">
+    <p-table [value]="BUGS_Total" *ngIf="BUGS_Total.length>0">
         
         <ng-template pTemplate="header">
             
             <tr>
-                <th colspan="3">QA Bugs</th>
-                <th colspan="3">PM Bugs</th>
-                <th colspan="3">UAT Bugs</th>
-                <th colspan="3">Other Bugs</th>
+                <th colspan="4">QA Bugs</th>
+                <th colspan="4">PM Bugs</th>
+                <th colspan="4">UAT Bugs</th>
+                <th colspan="4">Other Bugs</th>
     
             </tr>
             <tr>
                 <th>Total</th>
-                <th>Percentage</th>
+                <th>Perc(%)</th>
                 <th>Valid Bugs</th>
-                <th>Total</th>
-                <th>Percentage</th>
-                <th>Valid Bugs</th>
-                <th>Total</th>
-                <th>Percentage</th>
-                <th>Valid Bugs</th>
+                <th>Perc(%)</th>
 
                 <th>Total</th>
-                <th>Percentage</th>
+                <th>Perc(%)</th>
                 <th>Valid Bugs</th>
+                <th>Perc(%)</th>
+
+                <th>Total</th>
+                <th>Perc(%)</th>
+                <th>Valid Bugs</th>
+                <th>Perc(%)</th>
+
+                <th>Total</th>
+                <th>Perc(%)</th>
+                <th>Valid Bugs</th>
+                <th>Perc(%)</th>
                
             </tr>
           
@@ -119,21 +166,25 @@
             <tr>
                 <td>{{BUGS_Total.total_qa_bugs}}</td>
                 <td>{{BUGS_Total.qa_perc}}</td>
-                <td>{{BUGS_Total.valid_qa_perc}}</td>
+                <td>{{BUGS_Total.total_qa_valid_bugs}}</td>
+                <td>{{BUGS_Total.qa_valid_perc}}</td>
             
-                <td>{{BUGS_Total.str_total_pm_bugs}}</td>
-                <td>{{BUGS_Total.pm_perc}}</td>
-                <td>{{BUGS_Total.valid_pm_perc}}</td>
-
+                <td>{{BUGS_Total.total_pm_bugs}}</td>
+                <td>{{BUGS_Total.pm_percentage}}</td>
+                <td>{{BUGS_Total.total_valid_pm_bugs}}</td>
+                <td>{{BUGS_Total.pm_valid_perc}}</td>
 
             
-                <td>{{BUGS_Total.str_total_uat_bugs}}</td>
+                <td>{{BUGS_Total.total_uat_bugs}}</td>
                 <td>{{BUGS_Total.uat_perc}}</td>
-                <td>{{BUGS_Total.valid_uat_perc}}</td>
+                <td>{{BUGS_Total.total_valid_uat}}</td>
+                <td>{{BUGS_Total.uat_valid_perc}}</td>
 
-                <td>{{BUGS_Total.other_total}}</td>
-                <td>{{BUGS_Total.other_perc}}</td>
+                <td>{{BUGS_Total.total_other_bugs}}</td>
+                <td>{{BUGS_Total.other_percentage}}</td>
+                <td>{{BUGS_Total.total_valid_other_bugs}}</td>
                 <td>{{BUGS_Total.other_valid_perc}}</td>
+
 
                  
                 </tr>
@@ -152,22 +203,22 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Bug ID</th>
-                <th>koshers</th>
+                <th>Autmated Scenario</th>
                 <th>resolved-reason</th>
-                <th>Comments</th>
+                <th>Tags</th>
                 <th [style]="{width:'auto'}">Comments <button id="disabled-btn"   pButton icon="pi pi-pencil" type="button" (click)="toggleDisabled()"></button></th>
-                <th>Click on Save Button After Changes</th>
+                <th> <button id="disabled-btn" type="button" (click)="save_all_pm_bugs_comments()" pButton label="Save All"></button></th>
             
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-pm_bugs_kosher>
             <tr>
                 <td class="ui-resizable-column">{{pm_bugs_kosher.bug_id}}</td>
-                <td class="ui-resizable-column">{{pm_bugs_kosher.koshers}}</td>
-                <td class="ui-resizable-column">{{pm_bugs_kosher.resolvedreason}}</td>
-                <td class="ui-resizable-column">{{pm_bugs_kosher.comments}}</td>
-                 
-                <td class="ui-resizable-column"> <input type="text" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='pm_bugs_kosher.comments'> </td>   
+                <td class="ui-resizable-column">{{pm_bugs_kosher.kosher_scenario}}</td>
+                <td class="ui-resizable-column">{{pm_bugs_kosher.resolved_reason}}</td>
+                <td class="ui-resizable-column">{{pm_bugs_kosher.tags}}</td>
+                <td><textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='pm_bugs_kosher.comments'></textarea></td> 
+  
              
                 <td><button id="disabled-btn" type="button" (click)="Save_Comments(pm_bugs_kosher.bug_id,pm_bugs_kosher.comments)" pButton label="Save"></button> </td>
 
@@ -204,12 +255,12 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Bug ID</th>
-                <th>koshers</th>
+                <th>Automated Scenario</th>
                 <th>resolved-reason</th>
-                <th>Comments</th>
+                <th>Tags</th>
                 <th [style]="{width:'auto'}">Comments <button id="disabled-btn"   pButton icon="pi pi-pencil" type="button" (click)="toggleDisabled()"></button></th>
-                <th>Click on Save Button After Changes</th>
-          
+                <th> <button id="disabled-btn" type="button" (click)="save_all_qa_bugs_comments()" pButton label="Save All"></button></th>
+               
                  
 
             </tr>
@@ -217,10 +268,11 @@
         <ng-template pTemplate="body" let-qa_bugs_kosher>
             <tr>
                 <td>{{qa_bugs_kosher.bug_id}}</td>
-                <td>{{qa_bugs_kosher.koshers}}</td>
-                <td>{{qa_bugs_kosher.resolvedreason}}</td>
-                <td class="ui-resizable-column">{{qa_bugs_kosher.comments}}</td>
-                <td class="ui-resizable-column"> <input type="text" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_bugs_kosher.comments'> </td>   
+                <td>{{qa_bugs_kosher.kosher_scenario}}</td>
+                <td>{{qa_bugs_kosher.resolved_reason}}</td>
+                <td class="ui-resizable-column">{{qa_bugs_kosher.tags}}</td>
+ 
+                <td><textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_bugs_kosher.comments'></textarea></td> 
            
                 <td><button id="disabled-btn" type="button" (click)="Save_Comments(qa_bugs_kosher.bug_id,qa_bugs_kosher.comments)" pButton label="Save"></button> </td>
                
@@ -228,7 +280,9 @@
             </tr>
         </ng-template>
     </p-table>
-    <p-table [value]="qa_bugs_kosher" [resizableColumns]="true" *ngIf="qa_bugs_kosher.length==0 && is_visible">
+    <p-table [value]="qa_bugs_kosher" [resizableColumns]="true" *ngIf="qa_bugs_kosher.length==0 && is_visible"   selectionMode="multiple" [(selection)]="selectedValues"
+    (onRowSelect)=selectRow(selectedValues)
+    (onRowUnselect)="unselectRow($event)" #table>
         <ng-template pTemplate="caption">
             <tr>
                 <th colspan="3"> QA - Fixed Bugs </th>
@@ -262,11 +316,11 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Bug ID</th>
-                <th>koshers</th>
+                <th>Automated Scenario</th>
                 <th>resolved-reason</th>
-                <th>Comments</th>
+                <th>Tags</th>
                 <th [style]="{width:'auto'}">Comments <button id="disabled-btn"   pButton icon="pi pi-pencil" type="button" (click)="toggleDisabled()"></button></th>
-                <th>Click on Save Button After Changes</th>
+                <th> <button id="disabled-btn" type="button" (click)="save_all_qa_non_fixed_bugs_comments()" pButton label="Save All"></button></th>
                  
                  
 
@@ -275,10 +329,11 @@
         <ng-template pTemplate="body" let-qa_non_fixed>
             <tr>
                 <td>{{qa_non_fixed.bug_id}}</td>
-                <td>{{qa_non_fixed.koshers}}</td>
-                <td>{{qa_non_fixed.resolvedreason}}</td>
-                <td>{{qa_non_fixed.comments}}</td>
-                <td class="ui-resizable-column"> <input type="text" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_non_fixed.comments'> </td>   
+                <td>{{qa_non_fixed.kosher_scenario}}</td>
+                <td>{{qa_non_fixed.resolved_reason}}</td>
+                <td>{{qa_non_fixed.tags}}</td>
+                <td><textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_non_fixed.comments'></textarea></td> 
+ 
                 <td><button id="disabled-btn" type="button" (click)="Save_Comments(qa_non_fixed.bug_id,qa_non_fixed.comments)" pButton label="Save"></button> </td>
     
                  

@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'AngularDashboard';
+  title = 'BugTracebility Matrix';
+  heading_text:string;
   sideBarVisibility: boolean;
   constructor(private router:Router, private service: CollectDataService) {
 
@@ -16,6 +17,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.sideBarVisibility = true
+    this.heading_text="Bug Analysis Data"
   }
   navigateTo(route){
     this.router.navigate([route])

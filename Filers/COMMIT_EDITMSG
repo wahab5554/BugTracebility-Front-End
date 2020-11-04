@@ -1,0 +1,84 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Your branch is up to date with 'origin/master'.
+#
+# Changes to be committed:
+#	new file:   .editorconfig
+#	new file:   .gitignore
+#	new file:   backup/dist/AngularDashboard/3rdpartylicenses.txt
+#	new file:   backup/dist/AngularDashboard/color.c7a33805ffda0d32bd2a.png
+#	new file:   backup/dist/AngularDashboard/favicon.ico
+#	new file:   backup/dist/AngularDashboard/hue.0614c27197fc3ce572e1.png
+#	new file:   backup/dist/AngularDashboard/index.html
+#	new file:   backup/dist/AngularDashboard/line.567f57385ea3dde2c9ae.gif
+#	new file:   backup/dist/AngularDashboard/loading.8732a6660b528fadfaeb.gif
+#	new file:   backup/dist/AngularDashboard/main-es2015.1d2e0a16c1b1902efc15.js
+#	new file:   backup/dist/AngularDashboard/main-es5.1d2e0a16c1b1902efc15.js
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-300.177cc92d2e8027712a8c.ttf
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-300.27ef0b062b2e221df16f.svg
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-300.521d17bc9f3526c690e8.woff
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-300.60c866748ff15f5b347f.woff2
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-300.76b56857ebbae3a5a689.eot
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-700.148a6749baa5f658a451.eot
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-700.2e00b2635b51ba336b4b.svg
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-700.623e3205570002af47fc.woff
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-700.7e08cc656863d52bcb5c.ttf
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-700.d08c09f2f169f4a6edbc.woff2
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-regular.7aab4c13671282c90669.svg
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-regular.9dce7f01715340861bdb.eot
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-regular.bf2d0783515b7d75c35b.woff
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-regular.c045b73d86803686f4cd.ttf
+#	new file:   backup/dist/AngularDashboard/open-sans-v15-latin-regular.cffb686d7d2f4682df83.woff2
+#	new file:   backup/dist/AngularDashboard/password-meter.d59e6dc2616c53ce8e77.png
+#	new file:   backup/dist/AngularDashboard/polyfills-es2015.07e176351678a185e99b.js
+#	new file:   backup/dist/AngularDashboard/polyfills-es5.8b4b5008e9838b24e635.js
+#	new file:   backup/dist/AngularDashboard/primeicons.2d2afb2719a1ee903e57.eot
+#	new file:   backup/dist/AngularDashboard/primeicons.66ee0deb739ca71f0ecd.woff
+#	new file:   backup/dist/AngularDashboard/primeicons.df0140f8e79ecfeffaf8.ttf
+#	new file:   backup/dist/AngularDashboard/primeicons.e5e0e94474d5fd92e7e8.svg
+#	new file:   backup/dist/AngularDashboard/runtime-es2015.0811dcefd377500b5b1a.js
+#	new file:   backup/dist/AngularDashboard/runtime-es5.0811dcefd377500b5b1a.js
+#	new file:   backup/dist/AngularDashboard/scripts.8b52fdd3f959434763db.js
+#	new file:   backup/dist/AngularDashboard/styles-es2015.722d85ee5777a09121b5.js
+#	new file:   backup/dist/AngularDashboard/styles-es5.722d85ee5777a09121b5.js
+#	new file:   backup/dist/AngularDashboard/styles.5df3eb0001f2a825c550.css
+#	new file:   package-lock.json
+#	modified:   package.json
+#	modified:   src/app/BugAnalysis/BDD Covered/BddCovered.component.html
+#	modified:   src/app/BugAnalysis/BDD Covered/BddCovered.component.ts
+#	new file:   src/app/BugAnalysis/BugAnalysisCharts/SprintCharts.component.css
+#	new file:   src/app/BugAnalysis/BugAnalysisCharts/SprintCharts.component.html
+#	renamed:    src/app/home/home.component.spec.ts -> src/app/BugAnalysis/BugAnalysisCharts/SprintCharts.component.spec.ts
+#	new file:   src/app/BugAnalysis/BugAnalysisCharts/SprintCharts.component.ts
+#	modified:   src/app/BugAnalysis/BugAnalysisCharts/bugCharts.component.css
+#	modified:   src/app/BugAnalysis/BugAnalysisCharts/bugCharts.component.html
+#	modified:   src/app/BugAnalysis/BugAnalysisCharts/bugCharts.component.spec.ts
+#	modified:   src/app/BugAnalysis/BugAnalysisCharts/bugCharts.component.ts
+#	renamed:    src/app/home/home.component.css -> src/app/BugAnalysis/DataSettings.component.css
+#	new file:   src/app/BugAnalysis/DataSettings.component.html
+#	new file:   src/app/BugAnalysis/DataSettings.component.spec.ts
+#	new file:   src/app/BugAnalysis/DataSettings.component.ts
+#	new file:   src/app/BugAnalysis/DataSprint.component.css
+#	new file:   src/app/BugAnalysis/DataSprint.component.html
+#	new file:   src/app/BugAnalysis/DataSprint.component.spec.ts
+#	new file:   src/app/BugAnalysis/DataSprint.component.ts
+#	modified:   src/app/BugAnalysis/RCA.component.html
+#	modified:   src/app/BugAnalysis/RCA.component.ts
+#	new file:   src/app/BugAnalysis/RoleSettings.component.css
+#	new file:   src/app/BugAnalysis/RoleSettings.component.html
+#	new file:   src/app/BugAnalysis/RoleSettings.component.spec.ts
+#	new file:   src/app/BugAnalysis/RoleSettings.component.ts
+#	modified:   src/app/BugAnalysis/bug.component.html
+#	modified:   src/app/BugAnalysis/bug.component.ts
+#	modified:   src/app/app-routing.module.ts
+#	modified:   src/app/app.component.html
+#	modified:   src/app/app.component.ts
+#	modified:   src/app/app.module.ts
+#	modified:   src/app/collect-data.service.ts
+#	deleted:    src/app/home/home.component.html
+#	deleted:    src/app/home/home.component.ts
+#	modified:   src/styles.css
+#

@@ -2,29 +2,78 @@
     <div class="p-col-12 p-md-2" style="display: block;background-color: #e74c3c; text-align: center;color:#ecf0f1">
         <h3 class="w3-bar-item" style="margin-top: 25px !important;">S&P Global</h3>
         <hr>
+        <table >
+
+       <tr style="text-align: left;">
+
+      
+
      
      
-        <a (click)="navigateTo('bug')" class="w3-bar-item w3-button" style="display: block;"><i
-                    class="pi pi-user"></i>&nbsp;&nbsp; Bug Analysis Data</a>
-       
-        <a (click)="navigateTo('BddCovered')" class="w3-bar-item w3-button" style="display: block;"><i
-                    class="pi pi-user"></i>&nbsp;&nbsp; BDD Covered Bugs</a>
+        <a (click)="navigateTo('bug')" class="w3-bar-item w3-button"><i
+                    class="pi pi-user"></i> Bug Analysis Data</a>
+       </tr>            
+       <tr style="text-align: left;">
+
+        <a (click)="navigateTo('BddCovered')" class="w3-bar-item w3-button"><i
+            class="pi pi-user"></i> BDD Covered Bugs</a>
+
+       </tr>
+      
+
+       <tr style="text-align: left;">
+        <a (click)="navigateTo('bugcharts')" class="w3-bar-item w3-button"  ><i
+            class="pi pi-user"></i> Dashboard Trends</a>
+
+       </tr>
                  
-        <a (click)="navigateTo('bugcharts')" class="w3-bar-item w3-button" style="display: block;"><i
-                    class="pi pi-user"></i>&nbsp;&nbsp; Bugs Charts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-    
-        <a (click)="navigateTo('RCA')" class="w3-bar-item w3-button" style="display: block;"><i
-                 class="pi pi-user"></i>&nbsp;&nbsp; RCA Matix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+      <tr style="text-align: left;">
+        <a (click)="navigateTo('RCA')" class="w3-bar-item w3-button"><i
+            class="pi pi-user"></i> RCA Matix</a>
+            </tr>
+            <tr style="text-align: left;">
+
+                <a (click)="navigateTo('DataSettings')" class="w3-bar-item w3-button"><i
+                    class="pi pi-user"></i> Data Settings</a>     
+            </tr>
+          
+      <tr style="text-align: left;">
+      
+         
+                     
+                                            <a (click)="navigateTo('RoleSettings')" class="w3-bar-item w3-button"><i
+                        class="pi pi-user"></i>  Team Settings</a>   
+                   
+                    </tr>
+
+                    <tr style="text-align: left;">
+      
+         
+                     
+                        <a (click)="navigateTo('SprintCharts')" class="w3-bar-item w3-button"><i
+    class="pi pi-user"></i>  Sprint Comparison</a>   
+
+</tr>
+
+<tr style="text-align: left;">
+      
+         
+                     
+    <a (click)="navigateTo('SprintData')" class="w3-bar-item w3-button"><i
+class="pi pi-user"></i>  Sprints Settings</a>   
+
+</tr>
+                    </table>              
     </div>
     <div class="p-col-12 p-md-10  p-col-nogutter" style="display: block;">
         <div class="p-col-12 p-col-nogutter" style="background-color:#2c3e50;color:#ecf0f1;  padding: 5px;">
-            <h1 style="margin-top: 25px !important;">Graph Data</h1>
+            <h1 style="margin-top: 25px !important; text-align: center;">{{heading_text}}</h1>
         </div>
         <div class="p-col-12" style="background-color: #95a5a6;">
             <router-outlet></router-outlet>
         </div>
-        <div class="p-col-12">
-            S&P Global QE Department
+        <div class="p-col-12" style="text-align: center;">
+            S&P Global QE Department Islamabad Developed By CafeSupport Community
         </div>
     </div>
 </div>
