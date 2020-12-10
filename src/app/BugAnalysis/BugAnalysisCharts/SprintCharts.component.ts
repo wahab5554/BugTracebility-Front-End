@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild, ElementRef} from '@angular/core';
 import { CollectDataService } from 'src/app/collect-data.service';
-import * as XLSX from 'xlsx';
+
 import {MessageService} from 'primeng/api';
 import { AppComponent } from '../../app.component';
 import {ToastModule} from 'primeng/toast';
@@ -44,16 +44,7 @@ export class SprintChartsComponent implements OnInit {
 
     AppComponent.heading_text='Sprint Comparison'
     };
-  exportExcel() {
-
-    
-    const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(this.table.nativeElement);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws,"ReleaseCycle");
-    
-    /* save to file */
-    XLSX.writeFile(wb, 'BugTracebilityReportCharts.xlsx');
-}
+ 
 clear_data()
 
 {
@@ -202,7 +193,7 @@ else
     this.sideBarVisibility = true
    
    
-    this.service.collect_iterations_all().subscribe(data=> {
+    this.service.collect_iterations().subscribe(data=> {
     
      
          

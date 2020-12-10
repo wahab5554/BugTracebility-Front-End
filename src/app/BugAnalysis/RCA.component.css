@@ -1,13 +1,4 @@
- 
-  .ui-datatable {
-      margin-bottom:20px;
+.dropdown {
+    position: relative;
+    display: inline-block;
   }
- 
-  .ui-datatable-frozenlayout-left {
-      width:20%;
-  }
- 
-  .ui-datatable-frozenlayout-right {
-      width:80%;
-  }
-  
