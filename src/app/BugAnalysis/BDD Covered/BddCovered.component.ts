@@ -12,7 +12,7 @@ import {ToastModule} from 'primeng/toast';
 
 
 import { Data } from '@angular/router';
-import * as FileSaver from 'file-saver';
+// import * as FileSaver from 'file-saver';
 import {ProgressBarModule} from 'primeng/progressbar';
 @Component({
   selector: 'app-bug',

@@ -24,7 +24,6 @@
           </td>
             <td>
 
-          
             <div class="ui-inputgroup">
                 
                 <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Sprint: </label>
@@ -83,7 +82,7 @@
                 <th  pSortableColumn="p1">P1<p-sortIcon field="p1"></p-sortIcon></th>
                 <th  pSortableColumn="p2">P2<p-sortIcon field="p2"></p-sortIcon></th>
                 <th  pSortableColumn="p3">P3<p-sortIcon field="p3"></p-sortIcon></th>
-                <th  pSortableColumn="as_designed">As Designed/Wont Fix<p-sortIcon field="as_designed"></p-sortIcon></th>
+                <th  style="word-wrap: break-word;"  pSortableColumn="as_designed">As Designed/Wont Fix<p-sortIcon field="as_designed"></p-sortIcon></th>
                 <th style="word-wrap: break-word;" width="10%"  pSortableColumn="other_bugs">Cannot Reproduce/Deferred/Duplicate/obsolete<p-sortIcon field="other_bugs"></p-sortIcon></th>
                 <th  pSortableColumn="active_bugs">Active/New<p-sortIcon field="active_bugs"></p-sortIcon></th>
                 <th  pSortableColumn="iteration_path">Iteration<p-sortIcon field="iteration_path"></p-sortIcon></th>
@@ -97,14 +96,14 @@
                 <td>{{Bugs_data.role}}</td>
                 <td>{{Bugs_data.created_by}}</td>
                 <td>{{Bugs_data.total_bugs}}</td>
-                <td>{{Bugs_data.total_fixed}}</td>
+                <td>{{Bugs_data.total_fixed}}</td> 
                 <td>{{Bugs_data.p1}}</td>
                 <td>{{Bugs_data.p2}}</td>
                 <td>{{Bugs_data.p3}}</td>
                 <td>{{Bugs_data.as_designed}}</td>
                 <td>{{Bugs_data.other_bugs}}</td>
                 <td>{{Bugs_data.active_bugs}}</td>
-                <td>{{Bugs_data.iteration_path}}</td>
+                <td  style="word-wrap: break-word;">{{Bugs_data.iteration_path}}</td>
               
             </tr>
         </ng-template>
@@ -193,7 +192,7 @@
         </ng-template>
     </p-table>
 
-    <p-table [value]="pm_bugs_kosher" [resizableColumns]="true" *ngIf="pm_bugs_kosher.length>0">
+    <p-table [value]="pm_bugs_kosher" [resizableColumns]="true" *ngIf="pm_bugs_kosher.length>0" >
         <ng-template pTemplate="caption">
             <tr>
                 <th colspan="3"> PM / UAT / Others - Fixed P1 and P2 Bugs</th>
@@ -206,6 +205,7 @@
                 <th>Autmated Scenario</th>
                 <th>resolved-reason</th>
                 <th>Tags</th>
+                <th style="width:210px">Post Tags</th>
                 <th [style]="{width:'auto'}">Comments <button id="disabled-btn"   pButton icon="pi pi-pencil" type="button" (click)="toggleDisabled()"></button></th>
                 <th> <button id="disabled-btn" type="button" (click)="save_all_pm_bugs_comments()" pButton label="Save All"></button></th>
             
@@ -213,14 +213,18 @@
         </ng-template>
         <ng-template pTemplate="body" let-pm_bugs_kosher>
             <tr>
-                <td class="ui-resizable-column">{{pm_bugs_kosher.bug_id}}</td>
-                <td class="ui-resizable-column">{{pm_bugs_kosher.kosher_scenario}}</td>
-                <td class="ui-resizable-column">{{pm_bugs_kosher.resolved_reason}}</td>
+                
+                <td class="ui-resizable-column"><a></a> {{pm_bugs_kosher.bug_id}}</td>
+                <td class="ui-resizable-column" style="word-wrap: break-word;">{{pm_bugs_kosher.kosher_scenario}}</td>
+                <td class="ui-resizable-column" style="word-wrap: break-word;">{{pm_bugs_kosher.resolved_reason}}</td>
                 <td class="ui-resizable-column">{{pm_bugs_kosher.tags}}</td>
-                <td><textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='pm_bugs_kosher.comments'></textarea></td> 
+                <td  style="overflow:scroll; width:auto"><p-dropdown [options]="tags" [(ngModel)]="pm_bugs_kosher.p_tag" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}" >
+                </p-dropdown></td>
+                <td><textarea pInputTextarea   [rows]="5" [cols]="18" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='pm_bugs_kosher.comments'></textarea></td> 
   
              
-                <td><button id="disabled-btn" type="button" (click)="Save_Comments(pm_bugs_kosher.bug_id,pm_bugs_kosher.comments)" pButton label="Save"></button> </td>
+                <td><button id="disabled-btn" type="button" (click)="Save_Comments(pm_bugs_kosher.bug_id,pm_bugs_kosher.comments,pm_bugs_kosher.p_tag)" pButton label="Save"></button> </td>
 
               
             </tr>
@@ -258,6 +262,7 @@
                 <th>Automated Scenario</th>
                 <th>resolved-reason</th>
                 <th>Tags</th>
+                <th style="width:210px">Post Tags</th>
                 <th [style]="{width:'auto'}">Comments <button id="disabled-btn"   pButton icon="pi pi-pencil" type="button" (click)="toggleDisabled()"></button></th>
                 <th> <button id="disabled-btn" type="button" (click)="save_all_qa_bugs_comments()" pButton label="Save All"></button></th>
                
@@ -268,13 +273,16 @@
         <ng-template pTemplate="body" let-qa_bugs_kosher>
             <tr>
                 <td>{{qa_bugs_kosher.bug_id}}</td>
-                <td>{{qa_bugs_kosher.kosher_scenario}}</td>
-                <td>{{qa_bugs_kosher.resolved_reason}}</td>
-                <td class="ui-resizable-column">{{qa_bugs_kosher.tags}}</td>
+                <td style="word-wrap: break-word;">{{qa_bugs_kosher.kosher_scenario}}</td>
+                <td style="word-wrap: break-word;">{{qa_bugs_kosher.resolved_reason}}</td>
+                <td class="ui-resizable-column" style="word-wrap: break-word;">{{qa_bugs_kosher.tags}}</td>
+                 <td  style="overflow:scroll; width:auto"><p-dropdown [options]="tags" [(ngModel)]="qa_bugs_kosher.p_tag" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}" >
+                </p-dropdown></td>
  
-                <td><textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_bugs_kosher.comments'></textarea></td> 
+                <td><textarea pInputTextarea   [rows]="5" [cols]="15" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_bugs_kosher.comments'></textarea></td> 
            
-                <td><button id="disabled-btn" type="button" (click)="Save_Comments(qa_bugs_kosher.bug_id,qa_bugs_kosher.comments)" pButton label="Save"></button> </td>
+                <td><button id="disabled-btn" type="button" (click)="Save_Comments(qa_bugs_kosher.bug_id,qa_bugs_kosher.comments,qa_bugs_kosher.p_tag)" pButton label="Save"></button> </td>
                
               
             </tr>
@@ -319,6 +327,7 @@
                 <th>Automated Scenario</th>
                 <th>resolved-reason</th>
                 <th>Tags</th>
+                <th style="width:210px">Post Tags</th>
                 <th [style]="{width:'auto'}">Comments <button id="disabled-btn"   pButton icon="pi pi-pencil" type="button" (click)="toggleDisabled()"></button></th>
                 <th> <button id="disabled-btn" type="button" (click)="save_all_qa_non_fixed_bugs_comments()" pButton label="Save All"></button></th>
                  
@@ -330,11 +339,14 @@
             <tr>
                 <td>{{qa_non_fixed.bug_id}}</td>
                 <td>{{qa_non_fixed.kosher_scenario}}</td>
-                <td>{{qa_non_fixed.resolved_reason}}</td>
-                <td>{{qa_non_fixed.tags}}</td>
-                <td><textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_non_fixed.comments'></textarea></td> 
+                <td style="word-wrap: break-word;">{{qa_non_fixed.resolved_reason}}</td>
+                <td style="word-wrap: break-word;">{{qa_non_fixed.tags}}</td>
+                <td  style="overflow:scroll; width:auto"><p-dropdown [options]="tags" [(ngModel)]="qa_non_fixed.p_tag" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}" >
+                </p-dropdown></td>
+                <td><textarea pInputTextarea   [rows]="5" [cols]="18" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_non_fixed.comments'></textarea></td> 
  
-                <td><button id="disabled-btn" type="button" (click)="Save_Comments(qa_non_fixed.bug_id,qa_non_fixed.comments)" pButton label="Save"></button> </td>
+                <td><button id="disabled-btn" type="button" (click)="Save_Comments(qa_non_fixed.bug_id,qa_non_fixed.comments,qa_non_fixed.p_tag)" pButton label="Save"></button> </td>
     
                  
               

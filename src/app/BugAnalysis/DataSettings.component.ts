@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild, ElementRef} from '@angular/core';
 import { CollectDataService } from 'src/app/collect-data.service';
-import * as XLSX from 'xlsx';
+ import * as XLSX from 'xlsx';
 import {MessageService} from 'primeng/api';
 import {InputTextModule} from 'primeng/inputtext';
 import { DatePipe } from '@angular/common';
@@ -40,9 +40,12 @@ export class DataSettingsComponent implements OnInit {
       {label: 'Products\\Release 20.10\\Sprint 20.10.01' , value:'Products\\Release 20.10\\Sprint 20.10.01'},
       {label: 'Products\\Release 20.10\\Sprint 20.10.02' , value:'Products\\Release 20.10\\Sprint 20.10.02'},
       {label: 'Products\\Release 20.10\\Sprint 20.10.03' , value:'Products\\Release 20.10\\Sprint 20.10.03'},
-      {label: 'Products\\Release 20.10\\Sprint 20.10.04' , value:'Products\\Release 20.10\\Sprint 20.10.04'}
-      
-     
+      {label: 'Products\\Release 20.10\\Sprint 20.10.04' , value:'Products\\Release 20.10\\Sprint 20.10.04'},
+      {label: 'Products\\Release 21.01\\Sprint 21.01.01' , value:'Products\\Release 21.01\\Sprint 21.01.01'},
+      {label: 'Products\\Release 21.01\\Sprint 21.01.02' , value:'Products\\Release 21.01\\Sprint 21.01.02'},
+      {label: 'Products\\Release 21.01\\Sprint 21.01.03' , value:'Products\\Release 21.01\\Sprint 21.01.03'},
+      {label: 'Products\\Release 21.01\\Sprint 21.01.04' , value:'Products\\Release 21.01\\Sprint 21.01.04'}
+    
     ]
       
     };

@@ -3,8 +3,8 @@ import { CollectDataService } from '../collect-data.service';
 import { IfStmt } from '@angular/compiler';
 import {MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
-import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
+ import * as XLSX from 'xlsx';
+// import * as FileSaver from 'file-saver';
 import { Data } from '@angular/router';
 import { AppComponent } from '../app.component';
 
@@ -49,15 +49,35 @@ export class BugComponent implements OnInit {
   selectedReleaseCycle:any[] = []
   sprints: any[] = [{label:'Select',value:'Select'}];
   selectedsprint:any[]
+  selectedtag:any[]
+  selectedpm_tag:any[]
   Bugs_data: any[] = [];
-  
+  tags: any[] = [];
   selectedValues:any;
   constructor(private service: CollectDataService,private messageService: MessageService,private AppComponent:AppComponent) {
     this.buttn_text="edit"
     
     AppComponent.heading_text='Bug Analysis Data'
     this.teamname = []
+    this.tags = [
+      {
+        label: 'Select', value: 'Select',
+       
+      },
+      {
+        label: 'Covered in Test Plan', value: 'Covered in Test Plan',
+       
+      },
+      {
+        label: 'Not Covered in Test Plan', value: 'Not Covered in Test Plan',
+       
+      },
+      {
+        label: 'General Regression', value: 'General Regression',
+       
+      },
       
+    ];
     };
   clear_data()
   {
@@ -72,10 +92,10 @@ export class BugComponent implements OnInit {
   }
   populate_bug_data_db()
   {
-    console.log(typeof this.selectedsprint)
+   
     console.log(typeof this.selectedteams)
-
-  if(typeof this.selectedsprint=="object")
+    console.log(typeof this.selectedsprint)
+  if(typeof this.selectedteams=="object")
   {
     this.is_visible=false
     this.messageService.add({severity:'error', summary:'Please Select Sprint!', detail:'Via BugAnalysis Team'});
@@ -191,7 +211,7 @@ export class BugComponent implements OnInit {
       
 
      
-      this.Save_Comments(this.qa_non_fixed[i].bug_id,this.qa_non_fixed[i].comments)
+      this.Save_Comments(this.qa_non_fixed[i].bug_id,this.qa_non_fixed[i].comments,this.qa_non_fixed[i].p_tag)
     }
   }
 
@@ -205,7 +225,7 @@ export class BugComponent implements OnInit {
       
 
      
-      this.Save_Comments(this.pm_bugs_kosher[i].bug_id,this.pm_bugs_kosher[i].comments)
+      this.Save_Comments(this.pm_bugs_kosher[i].bug_id,this.pm_bugs_kosher[i].comments,this.pm_bugs_kosher[i].p_tag)
     }
   }
   save_all_qa_bugs_comments(){
@@ -218,14 +238,15 @@ export class BugComponent implements OnInit {
       
 
      
-      this.Save_Comments(this.qa_bugs_kosher[i].bug_id,this.qa_bugs_kosher[i].comments)
+      this.Save_Comments(this.qa_bugs_kosher[i].bug_id,this.qa_bugs_kosher[i].comments,this.qa_bugs_kosher[i].p_tag)
     }
    
   }
 
-  Save_Comments(bugid,comments) {
+  Save_Comments(bugid,comments,tag) {
     
-    this.service.post_comments_service(bugid,comments).subscribe(data=> {
+    console.log(tag)
+    this.service.post_comments_service(bugid,comments,tag).subscribe(data=> {
       
       this.messageService.add({severity:'success', summary:'Saved Successfully For BugID='+bugid, detail:'Via BugAnalysis Team'});
             

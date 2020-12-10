@@ -1,7 +1,7 @@
 import { Component,OnInit,ViewChild, ElementRef} from '@angular/core';
 
 import { CollectDataService } from 'src/app/collect-data.service';
-import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx';
 import {MessageService} from 'primeng/api';
 import { SortEvent } from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
@@ -44,6 +44,7 @@ export class BugChartsComponent implements OnInit {
   AllData4:any;
   graphData: any;
   selectedsprint:any[]
+  selected_platform:any[]
 
 
   sideBarVisibility: boolean;
@@ -51,22 +52,14 @@ export class BugChartsComponent implements OnInit {
   prod_labels:String[]=[];
   prod_data:number[]=[];
   sprints: any[] = [{label:'Select',value:'Select'}];
+  platforms: any[] = [{label:'Select',value:'Select'}];
 
   sprint:string;
   constructor(private service: CollectDataService,private messageService: MessageService,private AppComponent:AppComponent) {
 
     AppComponent.heading_text='Dashboard Trends'
     };
-  exportExcel() {
 
-    
-    const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(this.table.nativeElement);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws,"ReleaseCycle");
-    
-    /* save to file */
-    XLSX.writeFile(wb, 'BugTracebilityReportCharts.xlsx');
-}
 clear_data()
 
 {
@@ -86,6 +79,7 @@ clear_data()
   this.AllData4= [];
   this.graphData= [];
   this.selectedsprint=[];
+  this.selected_platform=[];
 }
 
 
@@ -122,8 +116,8 @@ populate_charts()
         }
       },
       x: 20,
-      yAlign: 'center',
-      xAlign: 'center',
+      yAlign: 'left',
+      xAlign: 'left',
     },
   
     
@@ -144,8 +138,38 @@ this.pieOptions2 = {
       position: 'right',
      
   },
+  
   tooltips: {
-    
+    filter: function (tooltipItem, data) {
+      var allData = data.datasets[tooltipItem.datasetIndex].data;
+      var tooltipLabel = data.labels[tooltipItem.index];
+      var tooltipData = allData[tooltipItem.index];
+      var total = 0;
+      for (var i in allData) {
+        total += allData[i];
+      }
+     
+      var label = data.labels[tooltipItem.index];
+      if(tooltipData=="0.0" && label=="General Regression")
+      {
+       return false;
+      }
+      if(tooltipData=="0.0" && label=="Covered in BDD")
+      {
+       return false;
+      }
+      if(tooltipData=="0.0" && label=="Not Covered in BDD")
+      {
+       return false;
+      }
+      else
+      {
+      var tooltipPercentage = Math.round((tooltipData / total) * 100);
+       
+      
+      return   tooltipData +'%';
+      }
+  },
     
     callbacks: {
    
@@ -158,22 +182,17 @@ this.pieOptions2 = {
           total += allData[i];
         }
         
-        var tooltipPercentage = Math.round((tooltipData / total) * 100);
-         console.log(tooltipData)
-        if (tooltipData=="0.0")
-        {
-           tooltipLabel.tooltipHidden;
-        }
-         else
-         {
+        
         return   tooltipData +'%';
-         }
-      }
+        }
+      
     },
-  
+    x: 20,
+    yAlign: 'right',
+    xAlign: 'center',
     
   },
-  position: 'custom',
+   
  
   showAllTooltips: true,
 
@@ -430,13 +449,22 @@ if(this.selectedsprint[0]== undefined)
     this.is_visible=false
     this.messageService.add({severity:'error', summary:'Please Select Sprint!', detail:'Via BugAnalysis Team'});
   }
+  if(this.selected_platform[0]== undefined || this.selected_platform.toString()== "Select")
+  {
+   
+    this.is_visible=false
+    this.messageService.add({severity:'error', summary:'Please Select Product!', detail:'Via BugAnalysis Team'});
+  }
 
 else
 {
+
+ 
+   
   this.sprint=this.selectedsprint.toString().replace('\\','-')
   this.is_visible=true
   this.messageService.add({severity:'success', summary:'Data Fetched From Database', detail:'Via BugAnalysis Team'});
-  this.service.collect_RCA_pie_chart_data(this.sprint.replace('\\','-')).subscribe(data=> {
+  this.service.collect_RCA_pie_chart_data(this.sprint.replace('\\','-'),this.selected_platform.toString()).subscribe(data=> {
     for (let item of data[0])
       {
     
@@ -478,7 +506,7 @@ else
   })
 
   
-  this.service.collect_product_wise_chart_data(this.sprint.replace('\\','-')).subscribe(data=> {
+  this.service.collect_product_wise_chart_data(this.sprint.replace('\\','-'),this.selected_platform.toString()).subscribe(data=> {
    
 
 
@@ -517,7 +545,7 @@ else
 
   })
 
-     this.service.collect_priority_GetQA_NonQA_Charts(this.sprint.replace('\\','-')).subscribe(data=> {
+     this.service.collect_priority_GetQA_NonQA_Charts(this.sprint.replace('\\','-'),this.selected_platform.toString()).subscribe(data=> {
       for (let item of data[0])
         {
       
@@ -542,7 +570,7 @@ else
     })
 
      
-    this.service.collect_get_valid_qa_bugs(this.sprint.replace('\\','-')).subscribe(data=> {
+    this.service.collect_get_valid_qa_bugs(this.sprint.replace('\\','-'),this.selected_platform.toString()).subscribe(data=> {
       for (let item of data[0])
         {
      
@@ -571,7 +599,7 @@ else
     }
     })
 
-    this.service.collect_bdd_uat_charts_data(this.sprint.replace('\\','-')).subscribe(data=> {
+    this.service.collect_bdd_uat_charts_data(this.sprint.replace('\\','-'),this.selected_platform.toString()).subscribe(data=> {
       for (let item of data[0])
         {
        
@@ -599,7 +627,7 @@ else
     })
 
     
-    this.service.collect_RCA_how_bug_foundchart_data(this.sprint.replace('\\','-')).subscribe(data=> {
+    this.service.collect_RCA_how_bug_foundchart_data(this.sprint.replace('\\','-'),this.selected_platform.toString()).subscribe(data=> {
       for (let item of data[0])
         {
       
@@ -627,7 +655,7 @@ else
     
   
 
-    this.service.collect_not_valid_bugs_chart_data(this.sprint.replace('\\','-')).subscribe(data=> {
+    this.service.collect_not_valid_bugs_chart_data(this.sprint.replace('\\','-'),this.selected_platform.toString()).subscribe(data=> {
       for (let item of data[0])
         {
       
@@ -654,7 +682,7 @@ else
     
 
 
-    this.service.collect_priority_bugs_chart(this.sprint.replace('\\','-')).subscribe(data=> {
+    this.service.collect_priority_bugs_chart(this.sprint.replace('\\','-'),this.selected_platform.toString()).subscribe(data=> {
       for (let item of data[0])
         {
       
@@ -681,7 +709,7 @@ else
   
 
    
-    this.service.collect_RCA_bug_identification_phase_chart_data(this.sprint.replace('\\','-')).subscribe(data=> {
+    this.service.collect_RCA_bug_identification_phase_chart_data(this.sprint.replace('\\','-'),this.selected_platform.toString()).subscribe(data=> {
       for (let item of data[0])
         {
       
@@ -713,6 +741,9 @@ else
   
   }
 
+  
+
+
 }
 customSort(event: SortEvent) {
   event.data.sort((data1, data2) => {
@@ -739,7 +770,7 @@ customSort(event: SortEvent) {
     this.sideBarVisibility = true
    
 
-    this.service.collect_iterations_all().subscribe(data=> {
+    this.service.collect_iterations().subscribe(data=> {
     
      
          
@@ -761,7 +792,27 @@ customSort(event: SortEvent) {
             
     })
   
+    this.service.collect_platforms().subscribe(data=> {
     
+     
+         
+      this.selected_platform=this.platforms[0]      
+        
+          for (let item of data[0])
+          {
+            let temp_item={label:"",value:""}
+            temp_item.label=JSON.parse(item).Platform
+            temp_item.value=JSON.parse(item).Platform
+            this.platforms.push(temp_item)
+         
+            
+          }
+        
+   
+            
+    
+            
+    })
   }
 
 }

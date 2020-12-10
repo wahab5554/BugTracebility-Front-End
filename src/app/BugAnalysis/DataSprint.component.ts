@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild, ElementRef} from '@angular/core';
 import { CollectDataService } from 'src/app/collect-data.service';
-import * as XLSX from 'xlsx';
+ import * as XLSX from 'xlsx';
 import {MessageService} from 'primeng/api';
 import {InputTextModule} from 'primeng/inputtext';
 import { DatePipe } from '@angular/common';

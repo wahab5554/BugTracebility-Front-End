@@ -1,23 +1,29 @@
- 
-
-
-<p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
-<div class="p-grid" style="display: block;  padding: 10px">
+ <p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
+<div class="p-grid" style="display: block;  padding: 5px">
     <p-toolbar>
         <div class="p-col-4 ui-toolbar-group-left">
             <table>
-
           <tr>
-           
-        
-       
             <td>
 
           
             <div class="ui-inputgroup">
                 
-                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;"> Select Sprint: </label>
+                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;">  Sprint </label>
                 <p-dropdown [options]="sprints" [(ngModel)]="selectedsprint" [virtualScroll]="true"
+                    [panelStyle]="{minWidth:'30em'}">
+                </p-dropdown>
+
+                
+            </div>
+        </td>
+        <td>
+
+          
+            <div class="ui-inputgroup">
+                
+                <label style="margin-left:10px; margin-top: 5px;margin-right: 5px;">  Product </label>
+                <p-dropdown [options]="platforms" [(ngModel)]="selected_platform" [virtualScroll]="true"
                     [panelStyle]="{minWidth:'30em'}">
                 </p-dropdown>
 
@@ -45,7 +51,7 @@
        
     </p-toolbar>
     <div class="container">
-        <table class="table" #table *ngIf="is_visible">
+        <table class="table" #table *ngIf="is_visible" >
         
       
   

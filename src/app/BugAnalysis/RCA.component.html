@@ -1,6 +1,6 @@
 <p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
 
-<div class="p-grid" style="display: block;  padding: 5px">
+<div class="p-grid" style="display: block;  padding: 5px" >
     <p-toolbar>
         <div class="p-col-4 ui-toolbar-group-left">
             <table>
@@ -53,11 +53,11 @@
        
     </p-toolbar>
     
-    <div class="container">
+    <div class="container" style=" overflow: auto;">
      
       
             
-    <p-table [value]="testdata" *ngIf="is_visible" >
+    <p-table [value]="testdata" *ngIf="is_visible"  >
         <ng-template pTemplate="caption">
           
         </ng-template>
@@ -72,7 +72,7 @@
                 <th [style]="{width:'200px'}">Bug Identification Phase</th>
                 <th [style]="{width:'180px'}">RCA_Comments <button id="disabled-btn"   pButton icon="pi pi-pencil" type="button" (click)="toggleDisabled()"></button></th>
 
-                <th> <button id="disabled-btn" type="button" (click)="save_all_RCA()" pButton label="Save All"></button></th>
+                <th [style]="{width:'180px'}"> <button id="disabled-btn" type="button" (click)="save_all_RCA()" pButton label="Save All"></button></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-testdata> 
