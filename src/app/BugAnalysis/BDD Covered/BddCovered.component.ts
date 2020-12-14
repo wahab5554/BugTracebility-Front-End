@@ -199,7 +199,7 @@ export class BddComponent implements OnInit {
      
     this.sideBarVisibility = true
    
-    this.service.collect_iterations_all().subscribe(data=> {
+    this.service.collect_iterations().subscribe(data=> {
     
      
          

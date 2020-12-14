@@ -78,7 +78,8 @@
         <ng-template pTemplate="body" let-testdata> 
             
             <tr>
-                <td [style]="{width:'100px'}">{{testdata.Bug_ID}}</td>
+                <td><a href="https://spglobal.visualstudio.com/Products/_workitems/edit//{{testdata.Bug_ID}}" target="_blank">{{testdata.Bug_ID}}</a></td>
+              
                 <td [style]="{width:'300px'}">{{testdata.Title}}</td>
                 <td [style]="{width:'70px'}">{{testdata.State}}</td>
                 

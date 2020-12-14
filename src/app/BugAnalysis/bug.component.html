@@ -213,15 +213,14 @@
         </ng-template>
         <ng-template pTemplate="body" let-pm_bugs_kosher>
             <tr>
-                
-                <td class="ui-resizable-column"><a></a> {{pm_bugs_kosher.bug_id}}</td>
+                <td><a href="https://spglobal.visualstudio.com/Products/_workitems/edit//{{pm_bugs_kosher.bug_id}}" target="_blank">{{pm_bugs_kosher.bug_id}}</a></td>
+   
                 <td class="ui-resizable-column" style="word-wrap: break-word;">{{pm_bugs_kosher.kosher_scenario}}</td>
                 <td class="ui-resizable-column" style="word-wrap: break-word;">{{pm_bugs_kosher.resolved_reason}}</td>
                 <td class="ui-resizable-column">{{pm_bugs_kosher.tags}}</td>
-                <td  style="overflow:scroll; width:auto"><p-dropdown [options]="tags" [(ngModel)]="pm_bugs_kosher.p_tag" [virtualScroll]="true"
-                    [panelStyle]="{minWidth:'30em'}" >
+                <td><p-dropdown appendTo="body" [options]="tags" [(ngModel)]="pm_bugs_kosher.p_tag">
                 </p-dropdown></td>
-                <td><textarea pInputTextarea   [rows]="5" [cols]="18" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='pm_bugs_kosher.comments'></textarea></td> 
+                <td><textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='pm_bugs_kosher.comments'></textarea></td> 
   
              
                 <td><button id="disabled-btn" type="button" (click)="Save_Comments(pm_bugs_kosher.bug_id,pm_bugs_kosher.comments,pm_bugs_kosher.p_tag)" pButton label="Save"></button> </td>
@@ -272,15 +271,15 @@
         </ng-template>
         <ng-template pTemplate="body" let-qa_bugs_kosher>
             <tr>
-                <td>{{qa_bugs_kosher.bug_id}}</td>
+                <td><a href="https://spglobal.visualstudio.com/Products/_workitems/edit//{{qa_bugs_kosher.bug_id}}" target="_blank">{{qa_bugs_kosher.bug_id}}</a></td>
                 <td style="word-wrap: break-word;">{{qa_bugs_kosher.kosher_scenario}}</td>
                 <td style="word-wrap: break-word;">{{qa_bugs_kosher.resolved_reason}}</td>
                 <td class="ui-resizable-column" style="word-wrap: break-word;">{{qa_bugs_kosher.tags}}</td>
-                 <td  style="overflow:scroll; width:auto"><p-dropdown [options]="tags" [(ngModel)]="qa_bugs_kosher.p_tag" [virtualScroll]="true"
+                 <td><p-dropdown appendTo="body" [options]="tags" [(ngModel)]="qa_bugs_kosher.p_tag" [virtualScroll]="true"
                     [panelStyle]="{minWidth:'30em'}" >
                 </p-dropdown></td>
  
-                <td><textarea pInputTextarea   [rows]="5" [cols]="15" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_bugs_kosher.comments'></textarea></td> 
+                <td><textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_bugs_kosher.comments'></textarea></td> 
            
                 <td><button id="disabled-btn" type="button" (click)="Save_Comments(qa_bugs_kosher.bug_id,qa_bugs_kosher.comments,qa_bugs_kosher.p_tag)" pButton label="Save"></button> </td>
                
@@ -337,20 +336,22 @@
         </ng-template>
         <ng-template pTemplate="body" let-qa_non_fixed>
             <tr>
-                <td>{{qa_non_fixed.bug_id}}</td>
+                <td><a href="https://spglobal.visualstudio.com/Products/_workitems/edit//{{qa_non_fixed.bug_id}}" target="_blank">{{qa_non_fixed.bug_id}}</a></td>
                 <td>{{qa_non_fixed.kosher_scenario}}</td>
                 <td style="word-wrap: break-word;">{{qa_non_fixed.resolved_reason}}</td>
                 <td style="word-wrap: break-word;">{{qa_non_fixed.tags}}</td>
-                <td  style="overflow:scroll; width:auto"><p-dropdown [options]="tags" [(ngModel)]="qa_non_fixed.p_tag" [virtualScroll]="true"
+                <td><p-dropdown appendTo="body" [options]="tags" [(ngModel)]="qa_non_fixed.p_tag" [virtualScroll]="true"
                     [panelStyle]="{minWidth:'30em'}" >
                 </p-dropdown></td>
-                <td><textarea pInputTextarea   [rows]="5" [cols]="18" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_non_fixed.comments'></textarea></td> 
+                <td><textarea pInputTextarea   [rows]="5" [cols]="20" id="disabled-input" pInputText [disabled]="disabled" pInputText placeholder="Comment" [(ngModel)]='qa_non_fixed.comments'></textarea></td> 
  
                 <td><button id="disabled-btn" type="button" (click)="Save_Comments(qa_non_fixed.bug_id,qa_non_fixed.comments,qa_non_fixed.p_tag)" pButton label="Save"></button> </td>
     
                  
               
             </tr>
+            
+             
         </ng-template>
     
     </p-table>
@@ -370,6 +371,19 @@
         
        
     </p-table>
+    <p-table>
+        <ng-template pTemplate="caption">
+          
+        
+        </ng-template>
+       
+        
+      
+        
+      
+      
+    </p-table>
+    
 </table>
 
 </div>
