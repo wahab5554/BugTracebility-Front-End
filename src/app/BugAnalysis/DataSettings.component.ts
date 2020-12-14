@@ -103,15 +103,16 @@ export class DataSettingsComponent implements OnInit {
     }  
   }
     get_vsts_data(sprint,start_date,end_date) {
-      start_date=this.datePipe.transform(start_date, 'MM-dd-yyyy').toString();
-      end_date=this.datePipe.transform(end_date, 'MM-dd-yyyy').toString();
+      start_date=this.datePipe.transform(start_date, 'yyyy-MM-dd').toString();
+      end_date=this.datePipe.transform(end_date, 'yyyy-MM-dd').toString();
       sprint=sprint.toString().replace('\\','-')
        
   
-      this.service.get_vsts_data(sprint.toString().replace('\\','-'),start_date.toString(),end_date).subscribe(data=> {
+      this.service.get_vsts_data(sprint.toString().replace('\\','-'),start_date,end_date).subscribe(data=> {
+        
         
         this.messageService.add({severity:'success', summary:'Data Imported from VSTS Successfully!', detail:'Via BugAnalysis Team'});
-              
+              this.search_data(sprint,start_date,end_date)
       })
   
     }  
