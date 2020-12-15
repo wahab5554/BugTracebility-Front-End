@@ -469,13 +469,13 @@ else
       {
     
     this.data8 = {
-      labels: ['Data Issue','Coding Issue','Environmental Specific','Design Related','Missing Requirement'],
+      labels: ['Data Issue','Coding Issue','Environmental Specific','Design Related','Missing Requirement','Un Assigned'],
        
       datasets: [
           {
              
               data: [JSON.parse(item).data_issue_perc,JSON.parse(item).coding_issue_perc,JSON.parse(item).environmental_specific_perc,
-                JSON.parse(item).desing_related_perc,JSON.parse(item).missing_req_perc
+                JSON.parse(item).desing_related_perc,JSON.parse(item).missing_req_perc,JSON.parse(item).total_unassigned_perc
               
               
               ],
@@ -485,7 +485,8 @@ else
                   "#A1BEEC",
                   "#A7D375",
                   "#A9795B",
-                  "#F7660B"
+                  "#F7660B",
+                  "#808080"
                 
 
               ],
@@ -494,7 +495,8 @@ else
                 "#A1BEEC",
                 "#A7D375",
                 "#A9795B",
-                "#F7660B"
+                "#F7660B",
+                "#808080"
               
 
               ]
@@ -632,19 +634,23 @@ else
         {
       
       this.data3 = {
-        labels: ['Manual Testing','Automated Testing'],
+        labels: ['Manual Testing','Automated Testing','Un Assigned'],
         datasets: [
             {
               
-                data: [JSON.parse(item).manual_issue_perc,JSON.parse(item).automated_issue_perc],
+                data: [JSON.parse(item).manual_issue_perc,JSON.parse(item).automated_issue_perc,JSON.parse(item).total_unassigned_perc],
                 backgroundColor: [
                     "#2D5820",
-                    "#5D2249"
+                    "#5D2249",
+                    "#808080"
+
+            
                    
                 ],
                 hoverBackgroundColor: [
                     "#2D5820",
-                    "#5D2249"
+                    "#5D2249",
+                    "#808080"
                  
                 ]
             }]    
@@ -714,22 +720,25 @@ else
         {
       
       this.data9 = {
-        labels: ['In Sprint','In Regression','In Production'],
+        labels: ['In Sprint','In Regression','In Production','Un assigned'],
         datasets: [
             {
               
-                data: [JSON.parse(item).total_sprint_perc,JSON.parse(item).total_regression_perc,JSON.parse(item).total_production_perc],
+                data: [JSON.parse(item).total_sprint_perc,JSON.parse(item).total_regression_perc,JSON.parse(item).total_production_perc,JSON.parse(item).total_un_assigned_perc],
                 backgroundColor: [
                     "#e6f7ff",
                     "#00ffcc",
-                    " #99ff99"
+                    "#99ff99",
+                    "#808080"
+
                   
 
                 ],
                 hoverBackgroundColor: [
                   "#e6f7ff",
                   "#00ffcc",
-                  "#99ff99"
+                  "#99ff99",
+                  "#808080"
                 
 
                 ]
